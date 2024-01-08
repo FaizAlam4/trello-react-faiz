@@ -26,20 +26,33 @@ function BoardSection() {
       });
   }, []);
 
-
   let handleBoard = () => {
-setForm((prev)=>!prev)
-
+    setForm((prev) => !prev);
   };
 
-  if(load==true){
-    return (<div className="load">Loading...</div>)
+  let handleForm = (e) => {
+    axios
+      .post(
+        `https://api.trello.com/1/boards/?name=${e}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
+      )
+      .then((res) => {
+        setData((value) => [...value, res.data]);
+        setForm(false);
+      })
+      .catch(() => {
+        alert("Couldn't create board!");
+        setForm(false);
+      });
+  };
+
+  if (load == true) {
+    return <div className="load">Loading...</div>;
   }
 
   return (
     <>
       <div>
-        <Container sx={{ width: "100vw", display:'relative' }}>
+        <Container sx={{ width: "100vw", display: "relative" }}>
           <Grid
             container
             spacing={3}
@@ -73,7 +86,7 @@ setForm((prev)=>!prev)
                 variant="caption"
                 component="caption"
               >
-                5 remaining
+                remaining {10-data.length}
                 <HelpOutlineOutlinedIcon
                   sx={{
                     fontSize: "1rem",
@@ -88,7 +101,7 @@ setForm((prev)=>!prev)
               <BoardLayOut key={index} id={board.id} data={board} />
             ))}
           </Grid>
-          {form && <FormComponent func={setForm} />}
+          {form && <FormComponent func={setForm} handleForm={handleForm} />}
         </Container>
       </div>
     </>
