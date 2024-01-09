@@ -20,14 +20,22 @@
     width: 100%;
     font-size: 0.9rem;
 }
-.card-button{
-    display:block;
-    width: 90%;
-    border: none;
-    cursor: pointer;
-    background-color: inherit;
-}
+
 .card-wrap{
   margin: 10px 0px;
   width: 100%;
+}
+
+.add-card{
+    min-width: 300px;
+}
+
+.card-btn{
+    background-color: rgba(0, 255, 255, 0.247);
+    color: black;
+    padding: 7px;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 20px;
+
 }

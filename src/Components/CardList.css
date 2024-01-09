@@ -3,7 +3,8 @@
     background-color: white;
     margin: 5px;
     border-radius: 5px;
-    padding: 5px;
+    padding: 9px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;;
     font-weight: 500;
     font-size: 1rem;
 }

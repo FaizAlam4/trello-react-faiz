@@ -85,7 +85,7 @@ function ListDisplay() {
           aria-describedby={ide}
           type="button"
           onClick={handleClick}
-          style={{ width: "100%", height: "100%", paddingTop: "10px" }}
+          style={{ width: "100%", height: "100%", paddingTop: "10px",fontSize:"1rem" }}
         >
           Add another list
         </div>
@@ -96,7 +96,7 @@ function ListDisplay() {
               p: 1,
               bgcolor: "white",
               boxShadow:
-                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", minHeight:'100px',padding:'10px',marginTop:"20px"
             }}
           >
             <form
