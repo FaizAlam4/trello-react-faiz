@@ -2,15 +2,21 @@ import "./BoardSection.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BoardLayout from "./BoardLayout";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Logo from "../assets/formLogo.svg";
-import Popper from "@mui/material/Popper";
-import Typography from "@mui/material/Typography";
+// import Popper from "@mui/material/Popper";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 function BoardSection() {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
+
+  const [opend, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -46,11 +52,11 @@ function BoardSection() {
       )
       .then((res) => {
         setData((value) => [...value, res.data]);
-        setAnchorEl(null);
+        setOpen(false)
       })
       .catch(() => {
         alert("Couldn't create board!");
-        setAnchorEl(null);
+        setOpen(false)
       });
   };
 
@@ -68,48 +74,69 @@ function BoardSection() {
           paddingTop: "40px",
           justifyContent: "start",
           margin: "auto",
-          gap:'50px',
-          marginLeft:'9vw'
+          gap: "55px",
+          marginLeft: "9vw",
         }}
       >
         <div>
-          <div
-            style={{
-              fontSize: "1.2rem",
-              backgroundColor: "#091e420f",
-              color: "#172b4d",
-              textAlign: "center",
-              lineHeight: "4rem",
-              borderRadius: "5px",
-              minWidth: "350px",
-              height: "150px",
-              padding: "20px",
-              marginTop: "10px",
-              marginLeft: "8px",
-            }}
-            aria-describedby={id}
-            type="button"
-            onClick={handleClick}
-          >
-            Create new board
-            <Typography
-              sx={{ display: "block" }}
-              variant="caption"
-              component="caption"
+          <Button onClick={handleOpen}>
+            {" "}
+            <div
+              style={{
+                fontSize: "1.2rem",
+                backgroundColor: "#091e420f",
+                color: "#172b4d",
+                textAlign: "center",
+                lineHeight: "4rem",
+                borderRadius: "5px",
+                minWidth: "350px",
+                height: "150px",
+                padding: "20px",
+                marginTop: "5px",
+                marginLeft: "8px",
+              }}
+              aria-describedby={id}
+              type="button"
+              onClick={handleClick}
             >
-              remaining {10 - data.length}
-              <HelpOutlineOutlinedIcon
-                sx={{
-                  fontSize: "1rem",
-                  display: "block",
-                  marginTop: "13px",
-                  marginLeft: "260px",
-                }}
-              />
-            </Typography>
-          </div>
-          <Popper id={id} open={open} anchorEl={anchorEl} placement="right">
-            <Box sx={{ border: 1, p: 1, bgcolor: "white", position: "fixed" }}>
+              Create new board
+              <Typography
+                sx={{ display: "block" }}
+                variant="caption"
+                component="caption"
+              >
+                remaining {10 - data.length}
+                <HelpOutlineOutlinedIcon
+                  sx={{
+                    fontSize: "1rem",
+                    display: "block",
+                    marginTop: "13px",
+                    marginLeft: "260px",
+                  }}
+                />
+              </Typography>
+            </div>
+          </Button>
+
+          <Modal
+            open={opend}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
               <div className="form">
                 <img className="ig" src={Logo} alt="" />
                 <form
@@ -138,7 +165,7 @@ function BoardSection() {
                 </form>
               </div>
             </Box>
-          </Popper>
+          </Modal>
         </div>
 
         {data.map((board, index) => (
