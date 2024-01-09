@@ -1,11 +1,27 @@
 /* eslint-disable react/prop-types */
-import Grid from '@mui/material/Grid'
-
-function BoardLayOut({data}) {
+import Grid from "@mui/material/Grid";
+import { Link } from "react-router-dom";
+function BoardLayOut({ data }) {
   return (
-    <Grid item xs={3.7} sx={{height:'150px',width:'80px',margin:'10px', background:`linear-gradient(${data.prefs.backgroundTopColor},${data.prefs.backgroundBottomColor})`, borderRadius:'5px',fontWeight:'bold', fontSize:'1.2rem', color:'white'}}>{data.name}</Grid>
-  )
+    <Grid
+      item
+      xs={3.6}
+      sx={{
+        height: "150px",
+        width: "80px",
+        margin: "10px",
+        background: `linear-gradient(${data.prefs.backgroundTopColor},${data.prefs.backgroundBottomColor})`,
+        borderRadius: "5px",
+        fontWeight: "bold",
+        fontSize: "1.2rem",
+        color: "white"
+      }}
+    >
+      <Link to={`/${data.id}`} style={{textDecoration:'none', color:'inherit'}}>
+        <div style={{ width: "300px", height: "100px"}}>{data.name}</div>
+      </Link>
+    </Grid>
+  );
 }
 
-
-export default BoardLayOut
+export default BoardLayOut;

@@ -1,8 +1,57 @@
-.load{
+.load {
     width: 400px;
     font-size: 3rem;
     font-weight: bold;
     margin: auto;
-    color:grey;
+    color: grey;
     margin-top: 100px;
+}
+
+.form {
+
+    background-color: white;
+    color: black;
+    width: 300px;
+    min-height: 400px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.ig {
+    width: 60%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    object-fit: cover;
+    background: url('https://images.unsplash.com/photo-1704504414486-292cc121cd0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDY2fDB8MXxjb2xsZWN0aW9ufDF8MzE3MDk5fHx8fHwyfHwxNzA0NzExNDE1fA&ixlib=rb-4.0.3&q=80&w=400') no-repeat left;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    display: block;
+}
+
+input {
+    width: 90%;
+    outline: none;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    height: 30px;
+    margin: auto;
+    display: block;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 10px
+}
+
+.btn {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    border: none;
+    display: block;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    height: 30px;
+    width: 90px;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 10px;
+
 }
