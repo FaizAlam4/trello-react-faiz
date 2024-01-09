@@ -89,12 +89,13 @@ function BoardSection() {
                 textAlign: "center",
                 lineHeight: "4rem",
                 borderRadius: "5px",
-                minWidth: "350px",
+                width: "340px",
                 height: "150px",
                 padding: "20px",
                 marginTop: "5px",
                 marginLeft: "8px",
               }}
+              className="modal-btn"
               aria-describedby={id}
               type="button"
               onClick={handleClick}
@@ -113,6 +114,7 @@ function BoardSection() {
                     marginTop: "13px",
                     marginLeft: "260px",
                   }}
+                  className="icn"
                 />
               </Typography>
             </div>
