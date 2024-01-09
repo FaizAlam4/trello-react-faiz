@@ -66,8 +66,10 @@ function BoardSection() {
           display: "flex",
           flexFlow: "row wrap",
           paddingTop: "40px",
-          justifyContent: "space-between",
+          justifyContent: "start",
           margin: "auto",
+          gap:'50px',
+          marginLeft:'9vw'
         }}
       >
         <div>

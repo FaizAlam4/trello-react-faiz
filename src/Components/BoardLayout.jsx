@@ -8,7 +8,7 @@ function BoardLayout({ data }) {
       style={{
         height: "150px",
         width: "350px",
-        margin: "10px",
+        margin: " 10px 10px",
         background: `linear-gradient(${data.prefs.backgroundTopColor},${data.prefs.backgroundBottomColor})`,
         borderRadius: "5px",
         fontWeight: "bold",
