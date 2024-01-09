@@ -1,8 +1,33 @@
 .wrap-item{
     background-color: rgb(241, 241, 247);
     min-width: 300px;
-    height: 120px;
+    min-height: 120px;
     border-radius: 15px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
     padding: 15px;
     font-weight:600;
+}
+.card-add-strip{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: start;
+    align-items: center;
+    color: grey;
+    font-weight: 500;
+    width: 100%;
+    font-size: 0.9rem;
+}
+.card-button{
+    display:block;
+    width: 90%;
+    border: none;
+    cursor: pointer;
+    background-color: inherit;
+}
+.card-wrap{
+  margin: 10px 0px;
+  width: 100%;
 }

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
-function BoardLayOut({ data }) {
+function BoardLayout({ data }) {
   return (
   <div
       style={{
@@ -27,4 +27,4 @@ function BoardLayOut({ data }) {
   );
 }
 
-export default BoardLayOut;
+export default BoardLayout;

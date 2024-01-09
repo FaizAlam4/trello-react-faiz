@@ -24,8 +24,8 @@
 }
 
 .list-btn {
-    background-color: rgb(25, 48, 197);
-    color: white;
+    background-color: rgba(0, 255, 255, 0.247);
+    color: black;
     padding: 7px;
     border-radius: 5px;
     margin-left: 10px;

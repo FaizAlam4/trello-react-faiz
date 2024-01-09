@@ -1,7 +1,7 @@
 import "./BoardSection.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import BoardLayOut from "./BoardLayOut";
+import BoardLayout from "./BoardLayout";
 import Box from "@mui/material/Box";
 import Logo from "../assets/formLogo.svg";
 import Popper from "@mui/material/Popper";
@@ -140,7 +140,7 @@ function BoardSection() {
         </div>
 
         {data.map((board, index) => (
-          <BoardLayOut key={index} id={board.id} data={board} />
+          <BoardLayout key={index} id={board.id} data={board} />
         ))}
       </div>
     </>
