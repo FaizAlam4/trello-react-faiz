@@ -18,6 +18,7 @@ function ListDisplay() {
   const ide = open ? "simple-popper" : undefined;
   const [res, setRes] = useState([]);
   const [listLoad, setlistLoad] = useState(true);
+  const [inputval, setInputval] = useState("");
 
   const { id } = useParams();
 
@@ -35,6 +36,22 @@ function ListDisplay() {
         console.log("Error occured...");
       });
   }, []);
+
+  let createList = (val) => {
+    axios
+      .post(
+        `https://api.trello.com/1/lists?name=${val}&idBoard=${id}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
+      )
+      .then((data) => {
+        setRes([...res, data.data]);
+        setAnchorEl(null);
+      })
+      .catch((err) => {
+        console.log(err);
+        setAnchorEl(null);
+        alert("Couldn't create list");
+      });
+  };
 
   if (listLoad) {
     return (
@@ -82,9 +99,24 @@ function ListDisplay() {
                 "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
             }}
           >
-            <input type="text" placeholder="title" />
-            <br />
-            <button className={`list-btn`}>Add list</button>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                createList(inputval);
+              }}
+            >
+              <input
+                value={inputval}
+                onChange={(e) => {
+                  setInputval(e.target.value);
+                }}
+                type="text"
+                placeholder="list-title"
+                required
+              />
+              <br />
+              <button className={`list-btn`}>Add list</button>
+            </form>
           </Box>
         </Popper>
       </div>

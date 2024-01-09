@@ -12,7 +12,7 @@ function App() {
     <>
       <Router>
         <Navigation />
-        {/* <Header/> */}
+
         <Routes>
           <Route
             path={"/"}
@@ -24,7 +24,7 @@ function App() {
             }
           />
 
-          <Route path={'/:id'} element={<ListDisplay/>}/>
+          <Route path={"/:id"} element={<ListDisplay />} />
         </Routes>
       </Router>
     </>

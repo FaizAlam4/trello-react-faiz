@@ -5,16 +5,12 @@ import BoardLayOut from "./BoardLayOut";
 import Box from "@mui/material/Box";
 import Logo from "../assets/formLogo.svg";
 import Popper from "@mui/material/Popper";
-
-// import Grid from "@mui/material/Grid";
-// import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 function BoardSection() {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
-  // const [form, setForm] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -33,7 +29,6 @@ function BoardSection() {
       .then((data) => data.data)
       .then((res) => {
         setData(res);
-        console.log(res);
         setLoad(false);
       });
   }, []);
@@ -70,7 +65,7 @@ function BoardSection() {
           width: "90%",
           display: "flex",
           flexFlow: "row wrap",
-          paddingTop: "70px",
+          paddingTop: "40px",
           justifyContent: "space-between",
           margin: "auto",
         }}
@@ -114,10 +109,13 @@ function BoardSection() {
           <Popper id={id} open={open} anchorEl={anchorEl} placement="right">
             <Box sx={{ border: 1, p: 1, bgcolor: "white", position: "fixed" }}>
               <div className="form">
-                  <img className="ig" src={Logo} alt="" />
-                <form onSubmit={(e)=>{
-                  e.preventDefault()
-                  handleForm(inp)}}>
+                <img className="ig" src={Logo} alt="" />
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleForm(inp);
+                  }}
+                >
                   <label
                     style={{
                       marginTop: "70px",
@@ -127,7 +125,12 @@ function BoardSection() {
                   >
                     Board Title <small style={{ color: "red" }}>*</small>
                   </label>
-                  <input type="text" value={inp} onChange={handleInput} required />
+                  <input
+                    type="text"
+                    value={inp}
+                    onChange={handleInput}
+                    required
+                  />
 
                   <button className="btn">Create</button>
                 </form>
