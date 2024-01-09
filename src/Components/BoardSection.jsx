@@ -65,7 +65,7 @@ function BoardSection() {
 
   return (
     <>
-    <div
+      <div
         style={{
           width: "90%",
           display: "flex",
@@ -75,7 +75,7 @@ function BoardSection() {
           margin: "auto",
         }}
       >
-        <div style={{ minWidth: "350px" }}>
+        <div>
           <div
             style={{
               fontSize: "1.2rem",
@@ -84,8 +84,9 @@ function BoardSection() {
               textAlign: "center",
               lineHeight: "4rem",
               borderRadius: "5px",
-              width: "100%",
+              minWidth: "350px",
               height: "150px",
+              padding: "20px",
               marginTop: "10px",
               marginLeft: "8px",
             }}
@@ -110,29 +111,26 @@ function BoardSection() {
               />
             </Typography>
           </div>
-          <Popper id={id} open={open} anchorEl={anchorEl}>
-            <Box sx={{ border: 1, p: 1, bgcolor: "white" }}>
+          <Popper id={id} open={open} anchorEl={anchorEl} placement="right">
+            <Box sx={{ border: 1, p: 1, bgcolor: "white", position: "fixed" }}>
               <div className="form">
-                <img className="ig" src={Logo} alt="" />
-                <label
-                  style={{
-                    marginTop: "70px",
-                    display: "block",
-                    padding: "15px",
-                  }}
-                >
-                  Board Title <small style={{ color: "red" }}>*</small>
-                </label>
-                <input type="text" value={inp} onChange={handleInput} />
+                  <img className="ig" src={Logo} alt="" />
+                <form onSubmit={(e)=>{
+                  e.preventDefault()
+                  handleForm(inp)}}>
+                  <label
+                    style={{
+                      marginTop: "70px",
+                      display: "block",
+                      padding: "15px",
+                    }}
+                  >
+                    Board Title <small style={{ color: "red" }}>*</small>
+                  </label>
+                  <input type="text" value={inp} onChange={handleInput} required />
 
-                <button
-                  onClick={() => {
-                    handleForm(inp);
-                  }}
-                  className="btn"
-                >
-                  Create
-                </button>
+                  <button className="btn">Create</button>
+                </form>
               </div>
             </Box>
           </Popper>
@@ -142,7 +140,6 @@ function BoardSection() {
           <BoardLayOut key={index} id={board.id} data={board} />
         ))}
       </div>
-
     </>
   );
 }

@@ -1,29 +1,25 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Popper from '@mui/material/Popper';
+import Box from "@mui/material/Box";
+import Popper from "@mui/material/Popper";
 import ListView from "./ListView";
 import "./ListDisplay.css";
 import AddIcon from "@mui/icons-material/Add";
 
 function ListDisplay() {
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    const handleClick = (event) => {
-      setAnchorEl(anchorEl ? null : event.currentTarget);
-    };
-  
-    const open = Boolean(anchorEl);
-    const ide = open ? 'simple-popper' : undefined;
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
+  const ide = open ? "simple-popper" : undefined;
   const [res, setRes] = useState([]);
-//   const [showmodal,setShowModal]=useState(false)
   const [listLoad, setlistLoad] = useState(true);
 
   const { id } = useParams();
-
-
 
   useEffect(() => {
     axios
@@ -63,24 +59,35 @@ function ListDisplay() {
         <ListView key={element.id} element={element} />
       ))}
 
-      <Link style={{textDecoration:'none', color:'inherit'}} onClick={handleClick}>
-        <div className="wrap-item-fix">
-          <div>
-            {" "}
-            <AddIcon sx={{ paddingRight: "5px" }} />{" "}
-          </div>{" "}
-          <div aria-describedby={ide} type="button" >
-  Add another list
-</div>
-<Popper id={ide} open={open} anchorEl={anchorEl}>
-  <Box sx={{ border: 1, p: 1, bgcolor: 'white', }}>
-<input type="text" placeholder=".. Add list title" />
-<br />
-
-  </Box>
-</Popper>
+      <div className="wrap-item-fix">
+        <div onClick={handleClick}>
+          {" "}
+          <AddIcon sx={{ paddingRight: "5px" }} />{" "}
+        </div>{" "}
+        <div
+          aria-describedby={ide}
+          type="button"
+          onClick={handleClick}
+          style={{ width: "100%", height: "100%", paddingTop: "10px" }}
+        >
+          Add another list
         </div>
-      </Link>
+        <Popper id={ide} open={open} anchorEl={anchorEl}>
+          <Box
+            sx={{
+              border: 0,
+              p: 1,
+              bgcolor: "white",
+              boxShadow:
+                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            }}
+          >
+            <input type="text" placeholder="title" />
+            <br />
+            <button className={`list-btn`}>Add list</button>
+          </Box>
+        </Popper>
+      </div>
     </div>
   );
 }
