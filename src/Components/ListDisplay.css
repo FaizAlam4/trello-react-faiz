@@ -1,10 +1,18 @@
-.wrap-flex{
+.wrap-flex {
     display: flex;
-    flex-flow: row wrap;
-    gap:30px;
-    padding:40px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 30px;
+    overflow: scroll;
+    padding: 40px;
+
 }
-.wrap-item-fix{
+
+.wrap-flex::-webkit-scrollbar {
+    background-color: transparent;
+}
+
+.wrap-item-fix {
     min-width: 300px;
     padding: 10px;
     height: 60px;
@@ -15,7 +23,7 @@
     background-color: rgba(0, 255, 255, 0.247);
 }
 
-.list-btn{
+.list-btn {
     background-color: rgb(25, 48, 197);
     color: white;
     padding: 7px;
