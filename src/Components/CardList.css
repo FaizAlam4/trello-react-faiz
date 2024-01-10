@@ -1,10 +1,18 @@
 .card-list{
     width: 100%;
-    background-color: white;
     margin: 5px;
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.open-card-btn{
+    width: 100%;
     padding: 9px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;;
-    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    background-color: white;
+    text-align: left;
+    font-weight: 450;
     font-size: 1rem;
 }
