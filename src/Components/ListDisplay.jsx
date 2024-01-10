@@ -53,6 +53,11 @@ function ListDisplay() {
       });
   };
 
+  let updateData=(data)=>{
+    let updateRes=res.filter((ele)=> ele.id !=data.id)
+    setRes(updateRes)
+  }
+
   if (listLoad) {
     return (
       <div
@@ -73,7 +78,7 @@ function ListDisplay() {
   return (
     <div className="wrap-flex">
       {res.map((element) => (
-        <ListView key={element.id} element={element} />
+        <ListView key={element.id} element={element} updateData={updateData} />
       ))}
 
       <div className="wrap-item-fix">

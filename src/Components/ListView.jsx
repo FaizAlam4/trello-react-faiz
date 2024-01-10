@@ -6,8 +6,9 @@ import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import CardList from "./CardList";
+import ArchiveListener from "./ArchiveListener";
 
-function ListView({ element }) {
+function ListView({ element,updateData}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const idf = open ? "simple-popover" : undefined;
@@ -25,12 +26,14 @@ function ListView({ element }) {
       .post(
         `https://api.trello.com/1/cards?idList=${element.id}&name=${val}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
       )
-      .then((data) => {setCardData([...cardData,data.data]);
-      setAnchorEl(null)
+      .then((data) => {
+        setCardData([...cardData, data.data]);
+        setAnchorEl(null);
       })
-      .catch(() => {alert("Couldn't add card")
-      setAnchorEl(null)
-    });
+      .catch(() => {
+        alert("Couldn't add card");
+        setAnchorEl(null);
+      });
   };
 
   useEffect(() => {
@@ -52,7 +55,19 @@ function ListView({ element }) {
 
   return (
     <div className="wrap-item">
-      <div>{element.name}</div>
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "row nowrap",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <div>{element.name}</div>
+        <div>
+          <ArchiveListener data={element} updateData={updateData}/>
+        </div>
+      </div>
 
       <div className="card-wrap">
         {cardData.map((ele) => {

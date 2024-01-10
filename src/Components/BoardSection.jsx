@@ -52,11 +52,11 @@ function BoardSection() {
       )
       .then((res) => {
         setData((value) => [...value, res.data]);
-        setOpen(false)
+        setOpen(false);
       })
       .catch(() => {
         alert("Couldn't create board!");
-        setOpen(false)
+        setOpen(false);
       });
   };
 
