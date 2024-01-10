@@ -57,7 +57,7 @@ function CardView() {
     fontSize: "1rem",
     borderRadius: "5px",
     boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px"
+      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
   };
 
   useEffect(() => {
@@ -110,8 +110,14 @@ function CardView() {
           {" "}
           <DomainVerificationIcon sx={{ position: "relative", top: "6px" }} />
           Checklist
-          <ClickAwayListener onClickAway={handleClickAway} >
-            <Box sx={{ position: "relative", float: "right", paddingRight:'120px' }}>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box
+              sx={{
+                position: "relative",
+                float: "right",
+                paddingRight: "120px",
+              }}
+            >
               <button
                 type="button"
                 style={{ backgroundColor: "#5252ff" }}
