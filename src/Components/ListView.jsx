@@ -71,7 +71,7 @@ function ListView({ element,updateData}) {
 
       <div className="card-wrap">
         {cardData.map((ele) => {
-          return <CardList key={cardData.id} data={ele} element={element} />;
+          return <CardList key={cardData.id} data={ele} element={element} cardData={cardData} />;
         })}
       </div>
 
