@@ -3,3 +3,14 @@
     font-size: 1rem;
     box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
+.checkitm{
+    padding: 0px;
+    outline: none;
+    display: inline;
+    width: auto;
+    box-shadow: none;
+    margin-top:10px;
+position: relative;
+top:10px;
+    border: 1px solid black;
+}
