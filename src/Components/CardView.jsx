@@ -18,6 +18,8 @@ function CardView() {
   // console.log(state.element2); //list name
 
   const [open, setOpen] = useState(false);
+  const [checklistData, setChecklistdata] = useState([]);
+  const [inputval, setInputval] = useState("");
 
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -25,6 +27,11 @@ function CardView() {
 
   const handleClickAway = () => {
     setOpen(false);
+  };
+
+  const updateChecklist = (id) => {
+    var ans = checklistData.filter((ele) => ele.id != id);
+    setChecklistdata(ans);
   };
 
   const createChecklist = () => {
@@ -74,9 +81,6 @@ function CardView() {
       });
   }, []);
 
-  const [checklistData, setChecklistdata] = useState([]);
-  const [inputval, setInputval] = useState("");
-
   return (
     <div className="wrap-card">
       <div
@@ -120,7 +124,11 @@ function CardView() {
             >
               <button
                 type="button"
-                style={{ backgroundColor: "#5252ff" }}
+                style={{
+                  backgroundColor: "#5252ff",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                }}
                 onClick={handleClick}
               >
                 <AddIcon
@@ -128,6 +136,7 @@ function CardView() {
                     backgroundColor: "#5252ff",
                     color: "white",
                     padding: "0px",
+                    borderRadius: "50%",
                   }}
                 />
               </button>
@@ -178,7 +187,13 @@ function CardView() {
           </ClickAwayListener>
         </b>
         {checklistData.map((ele) => {
-          return <ChecklistView data={ele} key={ele.id} />;
+          return (
+            <ChecklistView
+              data={ele}
+              key={ele.id}
+              updateChecklist={updateChecklist}
+            />
+          );
         })}
       </div>
     </div>

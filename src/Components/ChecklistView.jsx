@@ -9,7 +9,7 @@ import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function ChecklistView({ data }) {
+function ChecklistView({ data, updateChecklist }) {
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
@@ -20,6 +20,22 @@ function ChecklistView({ data }) {
 
   const handleClickAway = () => {
     setOpen(false);
+  };
+
+  const deleteChecklist = (data) => {
+    axios
+      .delete(
+        `https://api.trello.com/1/checklists/${data.id}?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("card deleted..");
+        updateChecklist(data.id);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Couldn't delete this checklist");
+      });
   };
 
   const styles = {
@@ -68,7 +84,20 @@ function ChecklistView({ data }) {
 
   return (
     <div className="chk-wrap">
-      <CheckIcon sx={{ paddingTop: "5px" }} /> {data.name}
+      <CheckIcon sx={{ paddingTop: "5px" }} /> {data.name}{" "}
+      <button
+        style={{
+          float: "right",
+          padding: "5px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          deleteChecklist(data);
+        }}
+      >
+        Delete
+      </button>
       <div>
         <LinearProgress
           variant="determinate"
@@ -89,7 +118,11 @@ function ChecklistView({ data }) {
       <div>
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: "relative", marginTop: "20px" }}>
-            <button type="button" onClick={handleClick}>
+            <button
+              style={{ padding: "5px" }}
+              type="button"
+              onClick={handleClick}
+            >
               Add an item
             </button>
             {open ? (
