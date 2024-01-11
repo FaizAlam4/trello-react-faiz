@@ -3,3 +3,8 @@
     width: 100%;
     list-style: none;
 }
+
+.archive:hover{
+    
+color: rgb(220, 28, 28);
+}

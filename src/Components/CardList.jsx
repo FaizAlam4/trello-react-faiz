@@ -3,8 +3,11 @@
 import { Link } from "react-router-dom";
 import "./CardList.css";
 import Speeddial from "./Speeddial";
+import { useState } from "react";
 
-function CardList({ data, element, cardData,updateCardData }) {
+function CardList({ data, element, cardData, updateCardData }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Link
@@ -12,10 +15,18 @@ function CardList({ data, element, cardData,updateCardData }) {
         state={{ element: cardData, element2: element["name"] }}
       >
         <div className="card-list">
-          <button className="open-card-btn">{data.name} </button>
+          <button
+            className="open-card-btn"
+            onMouseEnter={() => {
+              setOpen(true);
+            }}
+           
+          >
+            {data.name}{" "}
+          </button>
         </div>
       </Link>
-      <Speeddial data={data} updateCardData={updateCardData}/>
+      {open && <Speeddial data={data} updateCardData={updateCardData} />}
     </>
   );
 }

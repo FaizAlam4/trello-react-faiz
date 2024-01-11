@@ -7,8 +7,13 @@ import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
 import { useEffect, useState } from "react";
 import ChecklistView from "./ChecklistView";
 import Box from "@mui/material/Box";
-import { ClickAwayListener } from "@mui/base/ClickAwayListener";
-import AddIcon from "@mui/icons-material/Add";
+import Popper from "@mui/material/Popper";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Fade from "@mui/material/Fade";
+import Paper from "@mui/material/Paper";
+
 import axios from "axios";
 
 function CardView() {
@@ -20,14 +25,18 @@ function CardView() {
   const [open, setOpen] = useState(false);
   const [checklistData, setChecklistdata] = useState([]);
   const [inputval, setInputval] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [placement, setPlacement] = useState();
 
-  const handleClick = () => {
-    setOpen((prev) => !prev);
+  const handleClick = (newPlacement) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen((prev) => placement !== newPlacement || !prev);
+    setPlacement(newPlacement);
   };
 
-  const handleClickAway = () => {
-    setOpen(false);
-  };
+  // const handleClick = () => {
+  //   setOpen((prev) => !prev);
+  // };
 
   const updateChecklist = (id) => {
     var ans = checklistData.filter((ele) => ele.id != id);
@@ -42,29 +51,14 @@ function CardView() {
       .then((data) => {
         setChecklistdata([...checklistData, data.data]);
         setOpen(false);
+        setInputval("");
       })
       .catch((err) => {
         console.log(err);
         setOpen(false);
+        setInputval("");
         alert("Couldn't create the checklist");
       });
-  };
-
-  const styles = {
-    position: "absolute",
-    top: 28,
-    right: 0,
-    left: 0,
-    zIndex: 1,
-    width: "180px",
-    border: "none",
-    p: 2,
-    bgcolor: "background.paper",
-    fontWeight: "400",
-    fontSize: "1rem",
-    borderRadius: "5px",
-    boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
   };
 
   useEffect(() => {
@@ -91,7 +85,7 @@ function CardView() {
         }}
       >
         <div>
-          <div style={{ display: "flex", gap: "20px" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
             <div>
               <PaymentIcon />
             </div>
@@ -102,7 +96,7 @@ function CardView() {
             </div>
           </div>
           <small
-            style={{ padding: "3px", marginLeft: "40px" }}
+            style={{ padding: "3px", marginLeft: "33px" }}
           >{`in list ${state.element2}`}</small>
         </div>
         <div>
@@ -110,82 +104,81 @@ function CardView() {
         </div>
       </div>
       <div className="block2">
-        <b>
-          {" "}
-          <DomainVerificationIcon sx={{ position: "relative", top: "6px" }} />
-          Checklist
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <Box
-              sx={{
-                position: "relative",
-                float: "right",
-                paddingRight: "120px",
-              }}
-            >
-              <button
-                type="button"
-                style={{
-                  backgroundColor: "#5252ff",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                }}
-                onClick={handleClick}
+        <div className="wrap-2">
+          <div style={{ paddingBottom: "50px" }}>
+            <b>
+              {" "}
+              <DomainVerificationIcon
+                sx={{ position: "relative", top: "6px" }}
+              />
+              <span style={{ paddingLeft: "5px" }}>Checklist</span>
+            </b>
+          </div>
+          <div>
+            <Box sx={{ width: 500 }}>
+              <Popper
+                sx={{ zIndex: 1200 }}
+                open={open}
+                anchorEl={anchorEl}
+                placement={placement}
+                transition
               >
-                <AddIcon
-                  sx={{
-                    backgroundColor: "#5252ff",
-                    color: "white",
-                    padding: "0px",
-                    borderRadius: "50%",
-                  }}
-                />
-              </button>
-              {open ? (
-                <Box sx={styles}>
-                  <legend>
-                    <small style={{ color: "grey", paddingLeft: "8px" }}>
-                      Add a checklist
-                    </small>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        createChecklist();
-                      }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="title"
-                        value={inputval}
-                        onChange={(e) => {
-                          setInputval(e.target.value);
-                        }}
-                        required
-                      />
-                      <button
-                        style={{
-                          padding: "5px",
-                          minWidth: "20px",
-                          margin: "auto",
-                          display: "block",
-                          marginTop: "10px",
-                          boxShadow:
-                            "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
-                          border: "none",
-                          backgroundColor: "#5252ff",
-                          color: "white",
-                          borderRadius: "2px",
-                        }}
-                        type="submit"
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={350}>
+                    <Paper>
+                      <Typography
+                        sx={{ p: 1, width: "200px", minHeight: "30px" }}
                       >
-                        Add
-                      </button>
-                    </form>
-                  </legend>
-                </Box>
-              ) : null}
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            createChecklist();
+                          }}
+                          style={{ width: "80%", margin: "auto" }}
+                        >
+                          <input
+                            type="text"
+                            value={inputval}
+                            onChange={(e) => {
+                              setInputval(e.target.value);
+                            }}
+                            placeholder="title"
+                            required
+                          />
+                          <button
+                            style={{
+                              margin: "auto",
+                              display: "block",
+                              width: "40px",
+                              backgroundColor: "#1976d2",
+                              color: "white",
+                              marginTop: "10px",
+                              padding: "2px",
+                              borderRadius: "5px",
+                              cursor: "pointer",
+                            }}
+                            type="submit"
+                          >
+                            Add
+                          </button>
+                        </form>
+                      </Typography>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
+
+              <Grid container justifyContent="right">
+                <Grid item xs={3}>
+                  <Button onClick={handleClick("left-start")}>Add-list</Button>
+                  <br />
+                </Grid>
+              </Grid>
+              <br />
+              <br />
             </Box>
-          </ClickAwayListener>
-        </b>
+          </div>
+        </div>
         {checklistData.map((ele) => {
           return (
             <ChecklistView

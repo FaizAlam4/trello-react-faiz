@@ -3,10 +3,10 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ListIcon from '@mui/icons-material/List';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -59,17 +59,16 @@ export default function Speeddial({ data, updateCardData }) {
         top: -79,
         mt: 2,
         left: 195,
-        zIndex: 3,
-        fontSize: "0.2rem",
+        zIndex: 0
       }}
       fontSize="0.3rem"
     >
       <Box sx={{ position: "absolute", height: 2 }}>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
-          sx={{ transform: "scale(0.6)" }}
+          sx={{ transform: "scale(0.5)" }}
           hidden={false}
-          icon={<SpeedDialIcon />}
+          icon={<ListIcon/>}
           direction="right"
         >
           {actions.map((action) => (
@@ -77,7 +76,7 @@ export default function Speeddial({ data, updateCardData }) {
               key={action.name}
               icon={
                 <DeleteIcon
-                  sx={{ fontSize: "2rem" }}
+                  sx={{ fontSize: "2.7rem" }}
                   onClick={() => {
                     deleteChecklist(data,()=>{updateCardData(data.id)});
                   }}
