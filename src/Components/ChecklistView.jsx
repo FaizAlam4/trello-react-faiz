@@ -4,6 +4,7 @@
 import CheckIcon from "@mui/icons-material/Check";
 import LinearProgress from "@mui/material/LinearProgress";
 import "./ChecklistView.css";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import axios from "axios";
@@ -82,6 +83,20 @@ function ChecklistView({ data, updateChecklist }) {
       });
   };
 
+  const deleteCheckitem = (id) => {
+    axios
+      .delete(
+        `https://api.trello.com/1/checklists/${data.id}/checkItems/${id}?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
+      )
+      .then(() => {
+        let ans = checkItem.filter((ele) => ele.id != id);
+        setCheckitem(ans);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Couldn't delete this checkitem");
+      });
+  };
   return (
     <div className="chk-wrap">
       <CheckIcon sx={{ paddingTop: "5px" }} /> {data.name}{" "}
@@ -110,6 +125,21 @@ function ChecklistView({ data, updateChecklist }) {
           <>
             <input className="checkitm" type="checkbox" />
             <label style={{ padding: "10px" }}>{item.name}</label>
+            <button
+              style={{
+                float: "right",
+                padding: "5px",
+                border: "none",
+                backgroundColor: "white",
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                deleteCheckitem(item.id);
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+            </button>
 
             <br />
           </>
