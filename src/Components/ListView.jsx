@@ -53,6 +53,12 @@ function ListView({ element,updateData}) {
   const [cardData, setCardData] = useState([]);
   const [cardInput, setCardinput] = useState("");
 
+  const updateCardData=(id)=>{
+    
+  let updatedResult=cardData.filter((ele)=> ele.id!=id)
+  setCardData(updatedResult)
+  }
+
   return (
     <div className="wrap-item">
       <div
@@ -71,7 +77,7 @@ function ListView({ element,updateData}) {
 
       <div className="card-wrap">
         {cardData.map((ele) => {
-          return <CardList key={cardData.id} data={ele} element={element} cardData={cardData} />;
+          return <CardList key={ele.id} data={ele} element={element} cardData={cardData} updateCardData={updateCardData} />;
         })}
       </div>
 
