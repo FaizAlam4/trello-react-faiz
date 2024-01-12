@@ -7,6 +7,7 @@ import Popper from "@mui/material/Popper";
 import ListView from "./ListView";
 import "./ListDisplay.css";
 import BasicAlerts from "./ErrorComponent";
+import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -74,73 +75,80 @@ function ListDisplay() {
     );
   }
 
-  return (<>
-    <div className="wrap-flex">
-      {res.map((element) => (
-        <ListView
-          key={element.id}
-          element={element}
-          updateData={updateData}
-          boardId={id}
-          setErr={setErr}
-        />
-      ))}
+  return (
+    <>
+      <div className="wrap-flex">
+        {res.map((element) => (
+          <ListView
+            key={element.id}
+            element={element}
+            updateData={updateData}
+            boardId={id}
+            setErr={setErr}
+          />
+        ))}
 
-      <div className="wrap-item-fix">
-        <div onClick={handleClick}>
-          {" "}
-          <AddIcon sx={{ paddingRight: "5px" }} />{" "}
-        </div>{" "}
-        <div
-          aria-describedby={ide}
-          type="button"
-          onClick={handleClick}
-          style={{
-            width: "100%",
-            height: "100%",
-            paddingTop: "10px",
-            fontSize: "1rem",
-          }}
-        >
-          Add another list
-        </div>
-        <Popper id={ide} open={open} anchorEl={anchorEl}>
-          <Box
-            sx={{
-              border: 0,
-              p: 1,
-              bgcolor: "white",
-              boxShadow:
-                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-              minHeight: "100px",
-              padding: "10px",
-              marginTop: "20px",
+        <div className="wrap-item-fix">
+          <div onClick={handleClick}>
+            {" "}
+            <AddIcon sx={{ paddingRight: "5px" }} />{" "}
+          </div>{" "}
+          <div
+            aria-describedby={ide}
+            type="button"
+            onClick={handleClick}
+            style={{
+              width: "100%",
+              height: "100%",
+              paddingTop: "10px",
+              fontSize: "1rem",
             }}
           >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                createList(inputval);
+            Add another list
+          </div>
+          <Popper id={ide} open={open} anchorEl={anchorEl}>
+            <Box
+              sx={{
+                border: 0,
+                p: 1,
+                bgcolor: "white",
+                boxShadow:
+                  "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                minHeight: "100px",
+                padding: "10px",
+                marginTop: "20px",
               }}
             >
-              <input
-                value={inputval}
-                onChange={(e) => {
-                  setInputval(e.target.value);
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createList(inputval);
                 }}
-                type="text"
-                placeholder="list-title"
-                required
-                autoFocus='open'
-              />
-              <br />
-              <button className={`list-btn`}>Add list</button>
-            </form>
-          </Box>
-        </Popper>
+              >
+            
+        
+                  <CloseIcon sx={{marginLeft:'192px',cursor:'pointer'}} onClick={() => {
+                    setAnchorEl(false);
+                  }} fontSize="small" />{" "}
+               
+                <input
+                  value={inputval}
+                  onChange={(e) => {
+                    setInputval(e.target.value);
+                  }}
+                  type="text"
+                  placeholder="list-title"
+                  required
+                  autoFocus="open"
+                />
+                <br />
+                <button className={`list-btn`}>Add list</button>
+              </form>
+            </Box>
+          </Popper>
+        </div>
       </div>
-    </div>
-    {err ? <BasicAlerts /> : null}
+      {err ? <BasicAlerts /> : null}
     </>
   );
 }
