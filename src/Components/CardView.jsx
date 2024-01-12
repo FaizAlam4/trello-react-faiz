@@ -34,10 +34,6 @@ function CardView() {
     setPlacement(newPlacement);
   };
 
-  // const handleClick = () => {
-  //   setOpen((prev) => !prev);
-  // };
-
   const updateChecklist = (id) => {
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);

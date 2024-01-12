@@ -30,10 +30,12 @@ function ListView({ element,updateData}) {
       .then((data) => {
         setCardData([...cardData, data.data]);
         setAnchorEl(null);
+        setCardinput('')
       })
       .catch(() => {
         alert("Couldn't add card");
         setAnchorEl(null);
+        setCardinput('')
       });
   };
 
@@ -96,8 +98,8 @@ function ListView({ element,updateData}) {
           <div>
             <AddIcon sx={{ paddingRight: "5px", color: "white" }} />
           </div>
-          <div className="ac" style={{ color: "white" }}>
-            Add a card
+          <div className="ac" style={{ color: "white"}}>
+      Add a card 
           </div>
         </div>
       </Button>

@@ -31,11 +31,14 @@
 }
 
 .card-btn{
-    background-color: rgba(0, 255, 255, 0.247);
-    color: black;
+    background-color: rgb(20 103 231 / 98%);
+    color: white;
     padding: 7px;
     border-radius: 5px;
+    cursor: pointer;
     margin-left: 10px;
+    border: none;
     margin-top: 20px;
+    
 
 }

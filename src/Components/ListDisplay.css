@@ -21,15 +21,17 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-    background-color: rgba(0, 255, 255, 0.247);
+    box-shadow: rgba(204, 219, 232, 0.304) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    background-color: rgba(235, 235, 243, 0.997);
 }
 
 .list-btn {
-    background-color: rgba(0, 255, 255, 0.247);
-    color: black;
+    background-color: rgb(20 103 231 / 98%);
+    color: white;
     padding: 7px;
     border-radius: 5px;
+    cursor: pointer;
     margin-left: 10px;
+    border: none;
 
 }

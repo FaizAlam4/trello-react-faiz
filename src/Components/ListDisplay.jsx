@@ -47,10 +47,12 @@ function ListDisplay() {
       .then((data) => {
         setRes([...res, data.data]);
         setAnchorEl(null);
+        setInputval('')
       })
       .catch((err) => {
         console.log(err);
         setAnchorEl(null);
+        setInputval('')
         alert("Couldn't create list");
       });
   };

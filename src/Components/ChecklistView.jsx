@@ -75,6 +75,7 @@ function ChecklistView({ data, updateChecklist }) {
       .then((res) => {
         setCheckitem([...checkItem, res.data]);
         setOpen(false);
+        setInv('')
       })
       .catch((err) => {
         console.log(err);
