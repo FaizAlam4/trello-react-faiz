@@ -192,7 +192,7 @@ function CardView() {
                 sx={{ justifyContent: "center", paddingLeft: "40px" }}
               >
                 <Grid item xs={3}>
-                  <Button onClick={handleClick("left-start")}>Add-list</Button>
+                  <Button onClick={handleClick("bottom")}>Add-list</Button>
                   <br />
                 </Grid>
               </Grid>
