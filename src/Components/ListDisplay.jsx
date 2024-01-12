@@ -131,6 +131,7 @@ function ListDisplay() {
                 type="text"
                 placeholder="list-title"
                 required
+                autoFocus='open'
               />
               <br />
               <button className={`list-btn`}>Add list</button>

@@ -106,7 +106,7 @@ function CardView() {
         </div>
         <div>
           <CloseIcon
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer" , backgroundColor:'#f0ecec'}}
             onClick={() => {
               goBack(`/${state.element3}`);
             }}
@@ -162,6 +162,7 @@ function CardView() {
                             }}
                             placeholder="title"
                             required
+                            autoFocus="open"
                           />
                           <button
                             style={{

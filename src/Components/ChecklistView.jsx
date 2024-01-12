@@ -18,7 +18,7 @@ function ChecklistView({ data, updateChecklist }) {
   const [inv, setInv] = useState("");
   const [checkedItems, setCheckedItems] = useState([]);
   const [load, setLoad] = useState(true);
-  const [err,setErr]=useState(false)
+  const [err, setErr] = useState(false);
 
   const handleCheckboxChange = (id) => {
     let updatedData = checkedItems.includes(id)
@@ -47,13 +47,13 @@ function ChecklistView({ data, updateChecklist }) {
       })
       .catch((err) => {
         console.log(err);
-       setErr(true)
+        setErr(true);
       });
   };
 
   const styles = {
     position: "absolute",
-    top: 28,
+    top: -100,
     right: 0,
     left: 0,
     zIndex: 1,
@@ -92,7 +92,7 @@ function ChecklistView({ data, updateChecklist }) {
       })
       .catch((err) => {
         console.log(err);
-        setErr(true)
+        setErr(true);
         setOpen(false);
       });
   };
@@ -241,6 +241,7 @@ function ChecklistView({ data, updateChecklist }) {
                     }}
                     placeholder="item title.."
                     required
+                    autoFocus="open"
                   />
                   <button
                     style={{

@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 function BoardLayout({ data }) {
   return (
-  <div
+    <div
       style={{
         height: "150px",
         width: "350px",
@@ -12,7 +12,7 @@ function BoardLayout({ data }) {
         background: `linear-gradient(${data.prefs.backgroundTopColor},${data.prefs.backgroundBottomColor})`,
         borderRadius: "5px",
         fontWeight: "bold",
-        padding:'10px',
+        padding: "10px",
         fontSize: "1.2rem",
         color: "white",
       }}

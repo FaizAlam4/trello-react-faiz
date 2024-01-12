@@ -71,7 +71,7 @@ export default function Speeddial({ data, updateCardData, setErr }) {
               key={action.name}
               icon={
                 <DeleteIcon
-                  sx={{ fontSize: "2.7rem" }}
+                  sx={{ fontSize: "2.7rem", color: "red" }}
                   onClick={() => {
                     deleteChecklist(data, setErr, () => {
                       updateCardData(data.id);

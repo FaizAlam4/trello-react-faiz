@@ -131,6 +131,7 @@ function ListView({ element,updateData,boardId,setErr}) {
                 onChange={(e) => {
                   setCardinput(e.target.value);
                 }}
+                autoFocus='open'
               />
               <button className="card-btn" type="submit">
                 Add card

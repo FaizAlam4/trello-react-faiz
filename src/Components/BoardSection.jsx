@@ -168,7 +168,7 @@ function BoardSection() {
                     value={inp}
                     onChange={handleInput}
                     required
-                    autoFocus
+                    autoFocus="open"
                   />
 
                   <button className="btn">Create</button>
