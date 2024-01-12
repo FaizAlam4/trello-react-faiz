@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import ListView from "./ListView";
 import "./ListDisplay.css";
+import { CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 function ListDisplay() {
@@ -64,18 +65,9 @@ function ListDisplay() {
 
   if (listLoad) {
     return (
-      <div
-        style={{
-          fontSize: "2rem",
-          width: "600px",
-          margin: "auto",
-          fontWeight: "bold",
-          marginTop: "30vh",
-          color: "grey",
-        }}
-      >
-        Loading list items......
-      </div>
+      <div className="load"><CircularProgress sx={
+        {fontSize:'5rem',display:'block',margin:'auto'}
+      }/></div>
     );
   }
 

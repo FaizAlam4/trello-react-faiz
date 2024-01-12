@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Logo from "../assets/formLogo.svg";
-// import Popper from "@mui/material/Popper";
+import CircularProgress from "@mui/material/CircularProgress";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 function BoardSection() {
@@ -61,7 +61,13 @@ function BoardSection() {
   };
 
   if (load == true) {
-    return <div className="load">Loading...</div>;
+    return (
+      <div className="load">
+        <CircularProgress
+          sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
+        />
+      </div>
+    );
   }
 
   return (

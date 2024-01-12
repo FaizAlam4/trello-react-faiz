@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "./CardView.css";
-import { useParams, useLocation,useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CloseIcon from "@mui/icons-material/Close";
 import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
@@ -13,12 +13,12 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
+import { CircularProgress } from "@mui/material";
 
 import axios from "axios";
 
 function CardView() {
-
-const navigate=useNavigate()
+  const navigate = useNavigate();
 
   let { id2 } = useParams();
   var { state } = useLocation();
@@ -30,6 +30,7 @@ const navigate=useNavigate()
   const [inputval, setInputval] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [placement, setPlacement] = useState();
+  const [load, setLoad] = useState(true);
 
   const handleClick = (newPlacement) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,9 +42,9 @@ const navigate=useNavigate()
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);
   };
-  const goBack=(path)=>{
-    navigate(path)
-  }
+  const goBack = (path) => {
+    navigate(path);
+  };
 
   const createChecklist = () => {
     axios
@@ -70,6 +71,7 @@ const navigate=useNavigate()
       )
       .then((data) => {
         setChecklistdata(data.data);
+        setLoad(false);
       })
       .catch((err) => {
         console.log(err);
@@ -101,8 +103,13 @@ const navigate=useNavigate()
             style={{ padding: "3px", marginLeft: "33px" }}
           >{`in list ${state.element2}`}</small>
         </div>
-        <div >
-          <CloseIcon sx={{cursor:'pointer'}} onClick={()=>{goBack(`/${state.element3}`)}} />
+        <div>
+          <CloseIcon
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              goBack(`/${state.element3}`);
+            }}
+          />
         </div>
       </div>
       <div className="block2">
@@ -192,15 +199,23 @@ const navigate=useNavigate()
             </Box>
           </div>
         </div>
-        {checklistData.map((ele) => {
-          return (
-            <ChecklistView
-              data={ele}
-              key={ele.id}
-              updateChecklist={updateChecklist}
+        {load ? (
+          <div>
+            <CircularProgress
+              sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
             />
-          );
-        })}
+          </div>
+        ) : (
+          checklistData.map((ele) => {
+            return (
+              <ChecklistView
+                data={ele}
+                key={ele.id}
+                updateChecklist={updateChecklist}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

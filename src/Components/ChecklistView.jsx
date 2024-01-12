@@ -9,12 +9,14 @@ import Box from "@mui/material/Box";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 function ChecklistView({ data, updateChecklist }) {
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
   const [checkedItems, setCheckedItems] = useState([]);
+  const [load, setLoad] = useState(true);
 
   const handleCheckboxChange = (id) => {
     let updatedData = checkedItems.includes(id)
@@ -72,6 +74,7 @@ function ChecklistView({ data, updateChecklist }) {
       .then((res) => {
         console.log(res.data);
         setCheckitem(res.data);
+        setLoad(false);
       });
   }, []);
 
@@ -159,47 +162,55 @@ function ChecklistView({ data, updateChecklist }) {
           {barValue}%
         </div>
       </div>
-      {checkItem.map((item, index) => {
-        return (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              flexFlow: "row wrap",
-              justifyContent: "space-around",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <input
-                className="checkitm"
-                type="checkbox"
-                checked={checkedItems.includes(item.id)}
-                onChange={() => handleCheckboxChange(item.id)}
-              />
-              <label htmlFor="op" style={{ padding: "10px" }}>
-                {item.name}
-              </label>
+      {load ? (
+        <div>
+          <CircularProgress
+            sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
+          />
+        </div>
+      ) : (
+        checkItem.map((item, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                flexFlow: "row wrap",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <input
+                  className="checkitm"
+                  type="checkbox"
+                  checked={checkedItems.includes(item.id)}
+                  onChange={() => handleCheckboxChange(item.id)}
+                />
+                <label htmlFor="op" style={{ padding: "10px" }}>
+                  {item.name}
+                </label>
+              </div>
+              <div>
+                <button
+                  style={{
+                    float: "right",
+                    padding: "5px",
+                    border: "none",
+                    backgroundColor: "white",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    deleteCheckitem(item.id);
+                  }}
+                >
+                  <DeleteIcon fontSize="small" sx={{ marginTop: "25px" }} />
+                </button>
+              </div>
             </div>
-            <div>
-              <button
-                style={{
-                  float: "right",
-                  padding: "5px",
-                  border: "none",
-                  backgroundColor: "white",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  deleteCheckitem(item.id);
-                }}
-              >
-                <DeleteIcon fontSize="small" sx={{ marginTop: "25px" }} />
-              </button>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
 
       <div>
         <ClickAwayListener onClickAway={handleClickAway}>
