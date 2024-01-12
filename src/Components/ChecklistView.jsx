@@ -100,6 +100,10 @@ function ChecklistView({ data, updateChecklist }) {
       .then(() => {
         let ans = checkItem.filter((ele) => ele.id != id);
         setCheckitem(ans);
+        if (checkedItems.includes(id)) {
+          let newVal = checkedItems.filter((ele) => ele != id);
+          setCheckedItems(newVal);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -110,7 +114,7 @@ function ChecklistView({ data, updateChecklist }) {
   let barValue =
     checkItem.length == 0 ? 0 : (checkedItems.length / checkItem.length) * 100;
 
-  barValue = barValue.toFixed(2);
+  barValue = barValue.toFixed(0);
 
   return (
     <div className="chk-wrap">
@@ -151,7 +155,9 @@ function ChecklistView({ data, updateChecklist }) {
           value={barValue}
           sx={{ marginTop: "20px", paddingBottom: "5px" }}
         />
-        {barValue}%
+        <div style={{ textAlign: "center", fontSize: "small" }}>
+          {barValue}%
+        </div>
       </div>
       {checkItem.map((item, index) => {
         return (
