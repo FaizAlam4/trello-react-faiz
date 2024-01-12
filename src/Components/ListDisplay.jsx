@@ -82,7 +82,7 @@ function ListDisplay() {
   return (
     <div className="wrap-flex">
       {res.map((element) => (
-        <ListView key={element.id} element={element} updateData={updateData} />
+        <ListView key={element.id} element={element} updateData={updateData} boardId={id}/>
       ))}
 
       <div className="wrap-item-fix">

@@ -5,14 +5,14 @@ import "./CardList.css";
 import Speeddial from "./Speeddial";
 import { useState } from "react";
 
-function CardList({ data, element, cardData, updateCardData }) {
+function CardList({ data, element, cardData, updateCardData, boardId }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Link
         to={`/card/${data.id}`}
-        state={{ element: cardData, element2: element["name"] }}
+        state={{ element: cardData, element2: element["name"], element3:boardId }}
       >
         <div className="card-list">
           <button

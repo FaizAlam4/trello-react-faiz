@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "./CardView.css";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation,useNavigate } from "react-router-dom";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CloseIcon from "@mui/icons-material/Close";
 import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
@@ -17,6 +17,9 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 
 function CardView() {
+
+const navigate=useNavigate()
+
   let { id2 } = useParams();
   var { state } = useLocation();
   // console.log(state.element); //card data array
@@ -38,6 +41,9 @@ function CardView() {
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);
   };
+  const goBack=(path)=>{
+    navigate(path)
+  }
 
   const createChecklist = () => {
     axios
@@ -86,8 +92,8 @@ function CardView() {
               <PaymentIcon />
             </div>
             <div>
-              {state.element.map((card) => {
-                return card.id == id2 ? <h3>{card.name}</h3> : null;
+              {state.element.map((card, index) => {
+                return card.id == id2 ? <h3 key={index}>{card.name}</h3> : null;
               })}
             </div>
           </div>
@@ -95,8 +101,8 @@ function CardView() {
             style={{ padding: "3px", marginLeft: "33px" }}
           >{`in list ${state.element2}`}</small>
         </div>
-        <div>
-          <CloseIcon />
+        <div >
+          <CloseIcon sx={{cursor:'pointer'}} onClick={()=>{goBack(`/${state.element3}`)}} />
         </div>
       </div>
       <div className="block2">

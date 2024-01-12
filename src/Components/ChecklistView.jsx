@@ -114,7 +114,7 @@ function ChecklistView({ data, updateChecklist }) {
   let barValue =
     checkItem.length == 0 ? 0 : (checkedItems.length / checkItem.length) * 100;
 
-  barValue = barValue.toFixed(0);
+  barValue = parseInt(barValue.toFixed(0));
 
   return (
     <div className="chk-wrap">
