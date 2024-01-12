@@ -36,7 +36,7 @@ function Navigation() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "white" }}>
+    <AppBar position="static" sx={{ backgroundColor: "white" , width:'100vw'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -46,7 +46,7 @@ function Navigation() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: 'flex' ,
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
