@@ -101,7 +101,15 @@ function CardView() {
       </div>
       <div className="block2">
         <div className="wrap-2">
-          <div style={{ paddingBottom: "50px" }}>
+          <div
+            style={{
+              marginBottom: "20px",
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              padding: "5px",
+              borderRadius: "5px",
+              paddingBottom: "12px",
+            }}
+          >
             <b>
               {" "}
               <DomainVerificationIcon
@@ -164,7 +172,10 @@ function CardView() {
                 )}
               </Popper>
 
-              <Grid container justifyContent="right">
+              <Grid
+                container
+                sx={{ justifyContent: "center", paddingLeft: "40px" }}
+              >
                 <Grid item xs={3}>
                   <Button onClick={handleClick("left-start")}>Add-list</Button>
                   <br />

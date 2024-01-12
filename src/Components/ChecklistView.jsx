@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 
-import CheckIcon from "@mui/icons-material/Check";
 import LinearProgress from "@mui/material/LinearProgress";
 import "./ChecklistView.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import Box from "@mui/material/Box";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import axios from "axios";
@@ -14,6 +14,13 @@ function ChecklistView({ data, updateChecklist }) {
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
+  const [checkedItems,setCheckedItems]=useState([]);
+
+
+  const handleCheckboxChange = (id) => {
+  let updatedData=checkedItems.includes(id)? checkedItems.filter((id2)=>id2!=id) :[...checkedItems,id]
+  setCheckedItems(updatedData);
+  };
 
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -75,7 +82,7 @@ function ChecklistView({ data, updateChecklist }) {
       .then((res) => {
         setCheckitem([...checkItem, res.data]);
         setOpen(false);
-        setInv('')
+        setInv("");
       })
       .catch((err) => {
         console.log(err);
@@ -98,54 +105,89 @@ function ChecklistView({ data, updateChecklist }) {
         alert("Couldn't delete this checkitem");
       });
   };
+
+  let barValue=(checkedItems.length/checkItem.length)*100;
+
   return (
     <div className="chk-wrap">
-      <CheckIcon sx={{ paddingTop: "5px" }} /> {data.name}{" "}
-      <button
+      <div
         style={{
-          float: "right",
-          padding: "5px",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          deleteChecklist(data);
+          display: "flex",
+          flexFlow: "row wrap",
+          justifyContent: "space-between",
+          gap: "40px",
+          alignItems: "center",
         }}
       >
-        Delete
-      </button>
+        <div>
+          <ChecklistRtlIcon
+            sx={{ paddingTop: "4px", position: "relative", top: "4px" }}
+          />{" "}
+          {data.name}{" "}
+        </div>
+        <div>
+          <button
+            style={{
+              padding: "5px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              deleteChecklist(data);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+
       <div>
+     
         <LinearProgress
           variant="determinate"
-          value={0}
-          sx={{ marginTop: "10px" }}
+          value={barValue}
+          sx={{ marginTop: "20px",paddingBottom:'5px' }}
         />
+           {barValue}%
       </div>
-      {checkItem.map((item) => {
+      {checkItem.map((item, index) => {
         return (
-          <>
-            <input className="checkitm" type="checkbox" />
-            <label style={{ padding: "10px" }}>{item.name}</label>
-            <button
-              style={{
-                float: "right",
-                padding: "5px",
-                border: "none",
-                backgroundColor: "white",
-                marginTop: "10px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                deleteCheckitem(item.id);
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-            </button>
-
-            <br />
-          </>
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              flexFlow: "row wrap",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <input className="checkitm" type="checkbox" 
+              checked={checkedItems.includes(item.id)}
+                onChange={() => handleCheckboxChange(item.id)}
+                />
+              <label htmlFor="op" style={{ padding: "10px" }}>{item.name}</label>
+            </div>
+            <div>
+              <button
+                style={{
+                  float: "right",
+                  padding: "5px",
+                  border: "none",
+                  backgroundColor: "white",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  deleteCheckitem(item.id);
+                }}
+              >
+                <DeleteIcon fontSize="small" sx={{ marginTop: "25px" }} />
+              </button>
+            </div>
+          </div>
         );
       })}
+      
       <div>
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: "relative", marginTop: "20px" }}>

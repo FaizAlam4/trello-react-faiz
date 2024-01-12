@@ -2,6 +2,10 @@
     padding: 35px;
     font-size: 1rem;
     box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+   
 }
 .checkitm{
     padding: 0px;
