@@ -8,12 +8,13 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Logo from "../assets/formLogo.svg";
 import CircularProgress from "@mui/material/CircularProgress";
+import BasicAlerts from "./ErrorComponent";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 function BoardSection() {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
-
+  const [error, setError] = useState(false);
   const [opend, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -55,7 +56,7 @@ function BoardSection() {
         setOpen(false);
       })
       .catch(() => {
-        alert("Couldn't create board!");
+        setError(true);
         setOpen(false);
       });
   };
@@ -167,6 +168,7 @@ function BoardSection() {
                     value={inp}
                     onChange={handleInput}
                     required
+                    autoFocus
                   />
 
                   <button className="btn">Create</button>
@@ -175,6 +177,7 @@ function BoardSection() {
             </Box>
           </Modal>
         </div>
+        {error ? <BasicAlerts /> : null}
 
         {data.map((board, index) => (
           <BoardLayout key={index} id={board.id} data={board} />

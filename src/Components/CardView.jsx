@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
+import BasicAlerts from "./ErrorComponent";
 import { CircularProgress } from "@mui/material";
 
 import axios from "axios";
@@ -31,6 +32,7 @@ function CardView() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [placement, setPlacement] = useState();
   const [load, setLoad] = useState(true);
+  const [err, setErr] = useState(false);
 
   const handleClick = (newPlacement) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,7 +62,7 @@ function CardView() {
         console.log(err);
         setOpen(false);
         setInputval("");
-        alert("Couldn't create the checklist");
+        setErr(true);
       });
   };
 
@@ -75,7 +77,6 @@ function CardView() {
       })
       .catch((err) => {
         console.log(err);
-        alert("Couldn't fetch checklist due to some error...");
       });
   }, []);
 
@@ -199,6 +200,7 @@ function CardView() {
             </Box>
           </div>
         </div>
+        {err ? <BasicAlerts /> : null}
         {load ? (
           <div>
             <CircularProgress

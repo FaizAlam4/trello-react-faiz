@@ -6,7 +6,7 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ListIcon from '@mui/icons-material/List';
+import ListIcon from "@mui/icons-material/List";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -20,46 +20,41 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 
-const deleteChecklist = (data,updateCardData) => {
-    console.log(data.id)
+const deleteChecklist = (data, setErr, updateCardData) => {
+  console.log(data.id);
   axios
     .delete(
       `https://api.trello.com/1/cards/${data.id}?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
     )
     .then(() => {
       console.log("successfully deleted!");
-      updateCardData()
+      updateCardData();
     })
     .catch((err) => {
       console.log(err);
-  
+      setErr(true);
     });
 };
 
 const actions = [
   {
-    icon: (
-      <DeleteIcon
-        sx={{ fontSize: "2rem" }}
-      />
-    ),
+    icon: <DeleteIcon sx={{ fontSize: "2rem" }} />,
     name: "Delete",
   },
   //   { icon: <SaveIcon />, name: 'Save' },
 ];
 
-export default function Speeddial({ data, updateCardData }) {
-    // console.log(data.id)
+export default function Speeddial({ data, updateCardData, setErr }) {
   return (
     <Box
       sx={{
         transform: "translateZ(0px)",
         flexGrow: 1,
         position: "relative",
-        top: -79,
+        top: -84,
         mt: 2,
         left: 195,
-        zIndex: 0
+        zIndex: 0,
       }}
       fontSize="0.3rem"
     >
@@ -68,7 +63,7 @@ export default function Speeddial({ data, updateCardData }) {
           ariaLabel="SpeedDial playground example"
           sx={{ transform: "scale(0.5)" }}
           hidden={false}
-          icon={<ListIcon/>}
+          icon={<ListIcon />}
           direction="right"
         >
           {actions.map((action) => (
@@ -78,7 +73,9 @@ export default function Speeddial({ data, updateCardData }) {
                 <DeleteIcon
                   sx={{ fontSize: "2.7rem" }}
                   onClick={() => {
-                    deleteChecklist(data,()=>{updateCardData(data.id)});
+                    deleteChecklist(data, setErr, () => {
+                      updateCardData(data.id);
+                    });
                   }}
                 />
               }

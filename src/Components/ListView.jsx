@@ -9,7 +9,7 @@ import Popover from "@mui/material/Popover";
 import CardList from "./CardList";
 import ArchiveListener from "./ArchiveListener";
 
-function ListView({ element,updateData,boardId}) {
+function ListView({ element,updateData,boardId,setErr}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const idf = open ? "simple-popover" : undefined;
@@ -73,13 +73,13 @@ function ListView({ element,updateData,boardId}) {
       >
         <div>{element.name}</div>
         <div>
-          <ArchiveListener data={element} updateData={updateData}/>
+          <ArchiveListener data={element} updateData={updateData} setErr={setErr}/>
         </div>
       </div>
 
       <div className="card-wrap">
         {cardData.map((ele) => {
-          return <CardList key={ele.id} data={ele} element={element} cardData={cardData} updateCardData={updateCardData} boardId={boardId} />;
+          return <CardList key={ele.id} data={ele} element={element} cardData={cardData} updateCardData={updateCardData} boardId={boardId} setErr={setErr}/>;
         })}
       </div>
 

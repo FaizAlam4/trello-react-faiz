@@ -10,6 +10,7 @@ import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
+import BasicAlerts from "./ErrorComponent";
 
 function ChecklistView({ data, updateChecklist }) {
   const [checkItem, setCheckitem] = useState([]);
@@ -17,6 +18,7 @@ function ChecklistView({ data, updateChecklist }) {
   const [inv, setInv] = useState("");
   const [checkedItems, setCheckedItems] = useState([]);
   const [load, setLoad] = useState(true);
+  const [err,setErr]=useState(false)
 
   const handleCheckboxChange = (id) => {
     let updatedData = checkedItems.includes(id)
@@ -45,7 +47,7 @@ function ChecklistView({ data, updateChecklist }) {
       })
       .catch((err) => {
         console.log(err);
-        alert("Couldn't delete this checklist");
+       setErr(true)
       });
   };
 
@@ -90,7 +92,7 @@ function ChecklistView({ data, updateChecklist }) {
       })
       .catch((err) => {
         console.log(err);
-        alert("Couldn't create checklist items!");
+        setErr(true)
         setOpen(false);
       });
   };
@@ -263,6 +265,7 @@ function ChecklistView({ data, updateChecklist }) {
             ) : null}
           </Box>
         </ClickAwayListener>
+        {err ? <BasicAlerts /> : null}
       </div>
     </div>
   );

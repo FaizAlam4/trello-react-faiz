@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import ListView from "./ListView";
 import "./ListDisplay.css";
+import BasicAlerts from "./ErrorComponent";
 import { CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -21,6 +22,7 @@ function ListDisplay() {
   const [res, setRes] = useState([]);
   const [listLoad, setlistLoad] = useState(true);
   const [inputval, setInputval] = useState("");
+  const [err, setErr] = useState(false);
 
   const { id } = useParams();
 
@@ -37,7 +39,6 @@ function ListDisplay() {
       .catch(() => {
         console.log("Error occured...");
       });
-
   }, []);
 
   let createList = (val) => {
@@ -48,33 +49,41 @@ function ListDisplay() {
       .then((data) => {
         setRes([...res, data.data]);
         setAnchorEl(null);
-        setInputval('')
+        setInputval("");
       })
       .catch((err) => {
         console.log(err);
         setAnchorEl(null);
-        setInputval('')
-        alert("Couldn't create list");
+        setInputval("");
+        setErr(true);
       });
   };
 
-  let updateData=(data)=>{
-    let updateRes=res.filter((ele)=> ele.id !=data.id)
-    setRes(updateRes)
-  }
+  let updateData = (data) => {
+    let updateRes = res.filter((ele) => ele.id != data.id);
+    setRes(updateRes);
+  };
 
   if (listLoad) {
     return (
-      <div className="load"><CircularProgress sx={
-        {fontSize:'5rem',display:'block',margin:'auto'}
-      }/></div>
+      <div className="load">
+        <CircularProgress
+          sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
+        />
+      </div>
     );
   }
 
-  return (
+  return (<>
     <div className="wrap-flex">
       {res.map((element) => (
-        <ListView key={element.id} element={element} updateData={updateData} boardId={id}/>
+        <ListView
+          key={element.id}
+          element={element}
+          updateData={updateData}
+          boardId={id}
+          setErr={setErr}
+        />
       ))}
 
       <div className="wrap-item-fix">
@@ -86,7 +95,12 @@ function ListDisplay() {
           aria-describedby={ide}
           type="button"
           onClick={handleClick}
-          style={{ width: "100%", height: "100%", paddingTop: "10px",fontSize:"1rem" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            paddingTop: "10px",
+            fontSize: "1rem",
+          }}
         >
           Add another list
         </div>
@@ -97,7 +111,10 @@ function ListDisplay() {
               p: 1,
               bgcolor: "white",
               boxShadow:
-                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", minHeight:'100px',padding:'10px',marginTop:"20px"
+                "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+              minHeight: "100px",
+              padding: "10px",
+              marginTop: "20px",
             }}
           >
             <form
@@ -122,6 +139,8 @@ function ListDisplay() {
         </Popper>
       </div>
     </div>
+    {err ? <BasicAlerts /> : null}
+    </>
   );
 }
 
