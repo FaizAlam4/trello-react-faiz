@@ -14,12 +14,13 @@ function ChecklistView({ data, updateChecklist }) {
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
-  const [checkedItems,setCheckedItems]=useState([]);
-
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const handleCheckboxChange = (id) => {
-  let updatedData=checkedItems.includes(id)? checkedItems.filter((id2)=>id2!=id) :[...checkedItems,id]
-  setCheckedItems(updatedData);
+    let updatedData = checkedItems.includes(id)
+      ? checkedItems.filter((id2) => id2 != id)
+      : [...checkedItems, id];
+    setCheckedItems(updatedData);
   };
 
   const handleClick = () => {
@@ -106,7 +107,10 @@ function ChecklistView({ data, updateChecklist }) {
       });
   };
 
-  let barValue=(checkedItems.length/checkItem.length)*100;
+  let barValue =
+    checkItem.length == 0 ? 0 : (checkedItems.length / checkItem.length) * 100;
+
+  barValue = barValue.toFixed(2);
 
   return (
     <div className="chk-wrap">
@@ -142,13 +146,12 @@ function ChecklistView({ data, updateChecklist }) {
       </div>
 
       <div>
-     
         <LinearProgress
           variant="determinate"
           value={barValue}
-          sx={{ marginTop: "20px",paddingBottom:'5px' }}
+          sx={{ marginTop: "20px", paddingBottom: "5px" }}
         />
-           {barValue}%
+        {barValue}%
       </div>
       {checkItem.map((item, index) => {
         return (
@@ -162,11 +165,15 @@ function ChecklistView({ data, updateChecklist }) {
             }}
           >
             <div>
-              <input className="checkitm" type="checkbox" 
-              checked={checkedItems.includes(item.id)}
+              <input
+                className="checkitm"
+                type="checkbox"
+                checked={checkedItems.includes(item.id)}
                 onChange={() => handleCheckboxChange(item.id)}
-                />
-              <label htmlFor="op" style={{ padding: "10px" }}>{item.name}</label>
+              />
+              <label htmlFor="op" style={{ padding: "10px" }}>
+                {item.name}
+              </label>
             </div>
             <div>
               <button
@@ -187,7 +194,7 @@ function ChecklistView({ data, updateChecklist }) {
           </div>
         );
       })}
-      
+
       <div>
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: "relative", marginTop: "20px" }}>
