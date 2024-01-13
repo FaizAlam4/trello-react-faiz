@@ -5,3 +5,8 @@
   font-family: "Roboto";
   user-select: none;
 }
+
+body{
+  background:linear-gradient(rgb(211, 234, 248),rgb(255, 255, 255)) no-repeat;
+  min-height: 100vh;
+}
