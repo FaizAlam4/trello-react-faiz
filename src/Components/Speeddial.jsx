@@ -51,14 +51,14 @@ export default function Speeddial({ data, updateCardData, setErr }) {
         transform: "translateZ(0px)",
         flexGrow: 1,
         position: "relative",
-        top: -84,
+        top: -37,
         mt: 2,
-        left: 195,
-        zIndex: 0,
+        left: -84,
+        zIndex: 0
       }}
       fontSize="0.3rem"
     >
-      <Box sx={{ position: "absolute", height: 2 }}>
+      <Box sx={{ position: "absolute" }}>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
           sx={{ transform: "scale(0.5)" }}

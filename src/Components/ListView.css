@@ -24,6 +24,9 @@
 .card-wrap{
   margin: 10px 0px;
   width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+
 }
 
 .add-card{

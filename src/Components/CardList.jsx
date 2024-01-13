@@ -16,7 +16,7 @@ function CardList({
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <div style={{display:'flex'}}>
       <div
         style={{
           display: "flex",

@@ -86,7 +86,7 @@ function BoardSection() {
         }}
       >
         <div>
-          <Button onClick={handleOpen}>
+          <Button onClick={handleOpen} disableRipple>
             {" "}
             <div
               style={{

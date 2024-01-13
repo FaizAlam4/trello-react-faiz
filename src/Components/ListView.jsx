@@ -87,6 +87,7 @@ function ListView({ element,updateData,boardId,setErr}) {
         aria-describedby={idf}
         variant="contained"
         onClick={handleClick}
+        disableRipple
         sx={{
           width: "100%",
           outline: "none",
