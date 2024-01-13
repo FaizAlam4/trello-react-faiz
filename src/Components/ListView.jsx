@@ -7,11 +7,14 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import CardList from "./CardList";
 import ArchiveListener from "./ArchiveListener";
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 import apiService from "../API/api";
 
 function ListView({ element, updateData, boardId, setErr }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [load, setLoad] = useState(true);
+
   const idf = open ? "simple-popover" : undefined;
 
   const handleClick = (event) => {
@@ -23,25 +26,30 @@ function ListView({ element, updateData, boardId, setErr }) {
   };
 
   let createCard = (val) => {
- 
-    apiService.post(`cards?idList=${element.id}&name=${val}&`).then((data)=>{
-      setCardData([...cardData,data]);
-      setAnchorEl(null)
-      setCardinput("")
-    }).catch(()=>{
-      alert("Couldn't add card")
-      setAnchorEl(null)
-      setCardinput("")
-    })
+    apiService
+      .post(`cards?idList=${element.id}&name=${val}&`)
+      .then((data) => {
+        setCardData([...cardData, data]);
+        setAnchorEl(null);
+        setCardinput("");
+      })
+      .catch(() => {
+        alert("Couldn't add card");
+        setAnchorEl(null);
+        setCardinput("");
+      });
   };
 
   useEffect(() => {
- 
-    apiService.get(`lists/${element.id}/cards?`).then((data)=>{
-      setCardData(data)
-    }).catch((err)=>{
-      console.log(err)
-    })
+    apiService
+      .get(`lists/${element.id}/cards?`)
+      .then((data) => {
+        setCardData(data);
+        setLoad(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const [cardData, setCardData] = useState([]);
@@ -73,19 +81,23 @@ function ListView({ element, updateData, boardId, setErr }) {
       </div>
 
       <div className="card-wrap">
-        {cardData.map((ele) => {
-          return (
-            <CardList
-              key={ele.id}
-              data={ele}
-              element={element}
-              cardData={cardData}
-              updateCardData={updateCardData}
-              boardId={boardId}
-              setErr={setErr}
-            />
-          );
-        })}
+        {load ? (
+          <div style={{margin:"auto"}}><RotateRightIcon/></div>
+        ) : (
+          cardData.map((ele) => {
+            return (
+              <CardList
+                key={ele.id}
+                data={ele}
+                element={element}
+                cardData={cardData}
+                updateCardData={updateCardData}
+                boardId={boardId}
+                setErr={setErr}
+              />
+            );
+          })
+        )}
       </div>
 
       <Button
