@@ -102,9 +102,9 @@ function BoardSection() {
             >
               Create new board
               <Typography
-                sx={{ display: "block" }}
-                variant="caption"
-                component="caption"
+                sx={{ display: "block" , fontWeight:'200',fontSize:'1rem'}}
+                variant="h6"
+                component="h6"
               >
                 remaining {10 - data.length}
                 <HelpOutlineOutlinedIcon
@@ -171,10 +171,12 @@ function BoardSection() {
           </Modal>
         </div>
         {error ? <BasicAlerts /> : null}
+<div style={{display:'flex',flexFlow:'row wrap',gap:'30px'}}>
 
         {data.map((board, index) => (
           <BoardLayout key={index} id={board.id} data={board} />
         ))}
+</div>
       </div>
     </>
   );

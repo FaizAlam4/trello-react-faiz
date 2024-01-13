@@ -1,6 +1,5 @@
 import BoardSection from "./Components/BoardSection";
 import "./App.css";
-import Header from "./Components/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./Components/Navigation";
 import ListDisplay from "./Components/ListDisplay";
@@ -19,7 +18,6 @@ function App() {
             path={"/"}
             element={
               <>
-                <Header />
                 <BoardSection />
               </>
             }

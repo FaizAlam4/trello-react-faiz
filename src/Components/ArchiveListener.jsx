@@ -14,7 +14,7 @@ export default function ArchiveListener({ data, updateData, setErr }) {
         console.log(myData);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("this is ",err);
         setErr(true);
       });
   };
