@@ -46,6 +46,7 @@ function ListDisplay() {
         setRes([...res, data]);
         setAnchorEl(null);
         setInputval("");
+        setErr(false)
       })
       .catch((err) => {
         console.log(err);
@@ -55,9 +56,10 @@ function ListDisplay() {
       });
   };
 
-  let updateData = (data) => {
+  let updateData = (data,setErr) => {
     let updateRes = res.filter((ele) => ele.id != data.id);
     setRes(updateRes);
+    setErr(false)
   };
 
   if (listLoad) {

@@ -55,6 +55,7 @@ function CardView() {
         setChecklistdata([...checklistData, data]);
         setOpen(false);
         setInputval("");
+        setErr(false)
       })
       .catch((err) => {
         console.log(err);
@@ -137,6 +138,7 @@ function CardView() {
                   <Fade {...TransitionProps} timeout={350}>
                     <Paper>
                       <Typography
+                      variant="body"
                         sx={{ p: 1, width: "200px", minHeight: "30px" }}
                       >
                         <form

@@ -10,11 +10,12 @@ export default function ArchiveListener({ data, updateData, setErr }) {
     apiService
       .put(archiveEndPoint)
       .then((myData) => {
-        updateData(data);
+        updateData(data,setErr);
+        // setErr(false);
         console.log(myData);
       })
       .catch((err) => {
-        console.log("this is ",err);
+        console.log("this is ", err);
         setErr(true);
       });
   };

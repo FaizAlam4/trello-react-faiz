@@ -47,6 +47,7 @@ function BoardSection() {
       .then((res) => {
         setData((value) => [...value, res]);
         setOpen(false);
+        setError(false)
       })
       .catch(() => {
         setError(true);

@@ -21,14 +21,16 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 const deleteChecklist = (data, setErr, updateCardData) => {
-  console.log(data.id);
-
-  apiService.delete(`cards/${data.id}?`).then(()=>{
-    updateCardData()
-  }).catch((err)=>{
-    console.log(err)
-    setErr(true)
-  })
+  apiService
+    .delete(`cards/${data.id}?`)
+    .then(() => {
+      updateCardData();
+      setErr(false)
+    })
+    .catch((err) => {
+      console.log(err);
+      setErr(true);
+    });
 };
 
 const actions = [
@@ -49,7 +51,7 @@ export default function Speeddial({ data, updateCardData, setErr }) {
         top: -37,
         mt: 2,
         left: -84,
-        zIndex: 0
+        zIndex: 0,
       }}
       fontSize="0.3rem"
     >

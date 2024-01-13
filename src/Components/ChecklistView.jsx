@@ -36,26 +36,17 @@ function ChecklistView({ data, updateChecklist }) {
   };
 
   const deleteChecklist = (data) => {
-    // axios
-    //   .delete(
-    //     `https://api.trello.com/1/checklists/${data.id}?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     console.log("card deleted..");
-    //     updateChecklist(data.id);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setErr(true);
-    //   });
-    apiService.delete(`checklists/${data.id}?`).then((res)=>{
-      console.log(res)
-      updateChecklist(data.id)
-    }).catch((err)=>{
-      console.log(err)
-      setErr(true)
-    })
+   
+    apiService
+      .delete(`checklists/${data.id}?`)
+      .then((res) => {
+        console.log(res);
+        updateChecklist(data.id);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErr(true);
+      });
   };
 
   const styles = {
@@ -76,54 +67,44 @@ function ChecklistView({ data, updateChecklist }) {
   };
 
   useEffect(() => {
-
-    apiService.get(`checklists/${data.id}/checkItems?`).then((res)=>{
-      setCheckitem(res)
-      setLoad(false)
-    })
+    apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
+      setCheckitem(res);
+      setLoad(false);
+    });
   }, []);
 
   const createCheckitems = (data) => {
-
-    apiService.post(`checklists/${data.id}/checkItems?name=${inv}&`).then((res)=>{
-setCheckitem([...checkItem,res])
-setOpen(false)
-setInv('')
-    }).catch((err)=>{
-      console.log(err)
-      setErr(true)
-      setOpen(false)
-    })
+    apiService
+      .post(`checklists/${data.id}/checkItems?name=${inv}&`)
+      .then((res) => {
+        setCheckitem([...checkItem, res]);
+        setOpen(false);
+        setInv("");
+        setErr(false)
+      })
+      .catch((err) => {
+        console.log(err);
+        setErr(true);
+        setOpen(false);
+      });
   };
 
   const deleteCheckitem = (id) => {
-    // axios
-    //   .delete(
-    //     `https://api.trello.com/1/checklists/${data.id}/checkItems/${id}?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-    //   )
-    //   .then(() => {
-    //     let ans = checkItem.filter((ele) => ele.id != id);
-    //     setCheckitem(ans);
-    //     if (checkedItems.includes(id)) {
-    //       let newVal = checkedItems.filter((ele) => ele != id);
-    //       setCheckedItems(newVal);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     alert("Couldn't delete this checkitem");
-    //   });
-    apiService.delete(`checklists/${data.id}/checkItems/${id}?`).then(()=>{
-      let ans = checkItem.filter((ele) => ele.id != id);
+  
+    apiService
+      .delete(`checklists/${data.id}/checkItems/${id}?`)
+      .then(() => {
+        let ans = checkItem.filter((ele) => ele.id != id);
         setCheckitem(ans);
         if (checkedItems.includes(id)) {
           let newVal = checkedItems.filter((ele) => ele != id);
           setCheckedItems(newVal);
         }
-    }).catch((err)=>{
-      console.log(err)
-      alert("Couldn't delete this checkitem");
-    })
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Couldn't delete this checkitem");
+      });
   };
 
   let barValue =
