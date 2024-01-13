@@ -6,8 +6,6 @@ import ListDisplay from "./Components/ListDisplay";
 import CardView from "./Components/CardView";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
       <Router>
