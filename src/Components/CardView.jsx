@@ -14,9 +14,8 @@ import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 import BasicAlerts from "./ErrorComponent";
+import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
-
-import axios from "axios";
 
 function CardView() {
   const navigate = useNavigate();
@@ -49,12 +48,11 @@ function CardView() {
   };
 
   const createChecklist = () => {
-    axios
-      .post(
-        `https://api.trello.com/1/cards/${id2}/checklists?name=${inputval}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
+ 
+    apiService
+      .post(`cards/${id2}/checklists?name=${inputval}&`)
       .then((data) => {
-        setChecklistdata([...checklistData, data.data]);
+        setChecklistdata([...checklistData, data]);
         setOpen(false);
         setInputval("");
       })
@@ -67,17 +65,11 @@ function CardView() {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.trello.com/1/cards/${id2}/checklists?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
-      .then((data) => {
-        setChecklistdata(data.data);
-        setLoad(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    
+    apiService.get(`cards/${id2}/checklists?`).then((data)=>{
+      setChecklistdata(data);
+      setLoad(false)
+    }).catch((err)=>console.log(err))
   }, []);
 
   return (
@@ -106,7 +98,7 @@ function CardView() {
         </div>
         <div>
           <CloseIcon
-            sx={{ cursor: "pointer" , backgroundColor:'#f0ecec'}}
+            sx={{ cursor: "pointer", backgroundColor: "#f0ecec" }}
             onClick={() => {
               goBack(`/${state.element3}`);
             }}

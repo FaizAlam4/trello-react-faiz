@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import ListView from "./ListView";
@@ -10,6 +9,7 @@ import BasicAlerts from "./ErrorComponent";
 import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import apiService from "../API/api";
 
 function ListDisplay() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,27 +28,22 @@ function ListDisplay() {
   const { id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.trello.com/1/boards/${id}/lists?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
-      .then((data) => data.data)
-      .then((result) => {
-        setRes(result);
+    apiService
+      .get(`boards/${id}/lists?`)
+      .then((data) => {
+        setRes(data);
         setlistLoad(false);
       })
-      .catch(() => {
-        console.log("Error occured...");
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
   let createList = (val) => {
-    axios
-      .post(
-        `https://api.trello.com/1/lists?name=${val}&idBoard=${id}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
+    apiService
+      .post(`lists?name=${val}&idBoard=${id}&`)
       .then((data) => {
-        setRes([...res, data.data]);
+        setRes([...res, data]);
         setAnchorEl(null);
         setInputval("");
       })
@@ -125,12 +120,13 @@ function ListDisplay() {
                   createList(inputval);
                 }}
               >
-            
-        
-                  <CloseIcon sx={{marginLeft:'192px',cursor:'pointer'}} onClick={() => {
+                <CloseIcon
+                  sx={{ marginLeft: "192px", cursor: "pointer" }}
+                  onClick={() => {
                     setAnchorEl(false);
-                  }} fontSize="small" />{" "}
-               
+                  }}
+                  fontSize="small"
+                />{" "}
                 <input
                   value={inputval}
                   onChange={(e) => {

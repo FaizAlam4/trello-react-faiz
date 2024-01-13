@@ -1,6 +1,5 @@
 import "./BoardSection.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import BoardLayout from "./BoardLayout";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -10,6 +9,7 @@ import Logo from "../assets/formLogo.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import BasicAlerts from "./ErrorComponent";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import apiService from "../API/api";
 
 function BoardSection() {
   const [data, setData] = useState([]);
@@ -29,15 +29,10 @@ function BoardSection() {
   const id = open ? "simple-popper" : undefined;
 
   useEffect(() => {
-    axios
-      .get(
-        "https://api.trello.com/1/members/me/boards?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D"
-      )
-      .then((data) => data.data)
-      .then((res) => {
-        setData(res);
-        setLoad(false);
-      });
+    apiService.get("members/me/boards?").then((res) => {
+      setData(res);
+      setLoad(false);
+    });
   }, []);
 
   const [inp, setInp] = useState("");
@@ -47,12 +42,10 @@ function BoardSection() {
   };
 
   let handleForm = (e) => {
-    axios
-      .post(
-        `https://api.trello.com/1/boards/?name=${e}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
+    apiService
+      .post(`boards/?name=${e}&`)
       .then((res) => {
-        setData((value) => [...value, res.data]);
+        setData((value) => [...value, res]);
         setOpen(false);
       })
       .catch(() => {

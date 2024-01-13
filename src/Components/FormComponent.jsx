@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
-
 import "./FormComponent.css";
-// import axios from "axios";
 import { useState } from "react";
 import Logo from "../assets/formLogo.svg";
 

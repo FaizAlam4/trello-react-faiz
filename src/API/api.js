@@ -1,15 +1,16 @@
-// api.js
-import axios from 'axios';
+import axios from "axios";
 
-const baseUrl = 'https://api.trello.com/1';
-const keyVal='688828938a0a81fbaff1c76c5dfa1577'
-const tokenVal='ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D'
+const baseUrl = "https://api.trello.com/1";
+const keyVal = "688828938a0a81fbaff1c76c5dfa1577";
+const tokenVal =
+  "ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D";
 
-
-const apiService= {
+const apiService = {
   get: async (endpoint) => {
     try {
-      const response = await axios.get(`${baseUrl}/${endpoint}key=${keyVal}&token=${tokenVal}`);
+      const response = await axios.get(
+        `${baseUrl}/${endpoint}key=${keyVal}&token=${tokenVal}`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error fetching data for ${endpoint}:`, error);
@@ -17,9 +18,11 @@ const apiService= {
     }
   },
 
-  post: async (endpoint, postData) => {
+  post: async (endpoint) => {
     try {
-      const response = await axios.post(`${baseUrl}/${endpoint}`, postData);
+      const response = await axios.post(
+        `${baseUrl}/${endpoint}key=${keyVal}&token=${tokenVal}`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error posting data to ${endpoint}:`, error);
@@ -29,14 +32,26 @@ const apiService= {
 
   delete: async (endpoint) => {
     try {
-      const response = await axios.delete(`${baseUrl}/${endpoint}`);
+      const response = await axios.delete(
+        `${baseUrl}/${endpoint}key=${keyVal}&token=${tokenVal}`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error deleting data for ${endpoint}:`, error);
       throw error;
     }
   },
-  // Add other methods as needed (e.g., put, patch)
+  put: async (endpoint) => {
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${endpoint}key=${keyVal}&token=${tokenVal}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error(`Error deleting data for ${endpoint}:`, error);
+      throw error;
+    }
+  },
 };
 
 export default apiService;

@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import "./ListView.css";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import CardList from "./CardList";
 import ArchiveListener from "./ArchiveListener";
+import apiService from "../API/api";
 
-function ListView({ element,updateData,boardId,setErr}) {
+function ListView({ element, updateData, boardId, setErr }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const idf = open ? "simple-popover" : undefined;
@@ -23,43 +23,34 @@ function ListView({ element,updateData,boardId,setErr}) {
   };
 
   let createCard = (val) => {
-    axios
-      .post(
-        `https://api.trello.com/1/cards?idList=${element.id}&name=${val}&key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
-      .then((data) => {
-        setCardData([...cardData, data.data]);
-        setAnchorEl(null);
-        setCardinput('')
-      })
-      .catch(() => {
-        alert("Couldn't add card");
-        setAnchorEl(null);
-        setCardinput('')
-      });
+ 
+    apiService.post(`cards?idList=${element.id}&name=${val}&`).then((data)=>{
+      setCardData([...cardData,data]);
+      setAnchorEl(null)
+      setCardinput("")
+    }).catch(()=>{
+      alert("Couldn't add card")
+      setAnchorEl(null)
+      setCardinput("")
+    })
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.trello.com/1/lists/${element.id}/cards?key=688828938a0a81fbaff1c76c5dfa1577&token=ATTA8f44402b42b106239bf6db2011236ca301fa1f2e7c2bd2e8a8766b79af386751A34FF02D`
-      )
-      .then((data) => {
-        setCardData(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+ 
+    apiService.get(`lists/${element.id}/cards?`).then((data)=>{
+      setCardData(data)
+    }).catch((err)=>{
+      console.log(err)
+    })
   }, []);
 
   const [cardData, setCardData] = useState([]);
   const [cardInput, setCardinput] = useState("");
 
-  const updateCardData=(id)=>{
-    
-  let updatedResult=cardData.filter((ele)=> ele.id!=id)
-  setCardData(updatedResult)
-  }
+  const updateCardData = (id) => {
+    let updatedResult = cardData.filter((ele) => ele.id != id);
+    setCardData(updatedResult);
+  };
 
   return (
     <div className="wrap-item">
@@ -73,13 +64,27 @@ function ListView({ element,updateData,boardId,setErr}) {
       >
         <div>{element.name}</div>
         <div>
-          <ArchiveListener data={element} updateData={updateData} setErr={setErr}/>
+          <ArchiveListener
+            data={element}
+            updateData={updateData}
+            setErr={setErr}
+          />
         </div>
       </div>
 
       <div className="card-wrap">
         {cardData.map((ele) => {
-          return <CardList key={ele.id} data={ele} element={element} cardData={cardData} updateCardData={updateCardData} boardId={boardId} setErr={setErr}/>;
+          return (
+            <CardList
+              key={ele.id}
+              data={ele}
+              element={element}
+              cardData={cardData}
+              updateCardData={updateCardData}
+              boardId={boardId}
+              setErr={setErr}
+            />
+          );
         })}
       </div>
 
@@ -99,8 +104,8 @@ function ListView({ element,updateData,boardId,setErr}) {
           <div>
             <AddIcon sx={{ paddingRight: "5px", color: "white" }} />
           </div>
-          <div className="ac" style={{ color: "white"}}>
-      Add a card 
+          <div className="ac" style={{ color: "white" }}>
+            Add a card
           </div>
         </div>
       </Button>
@@ -126,13 +131,13 @@ function ListView({ element,updateData,boardId,setErr}) {
             >
               <input
                 value={cardInput}
-                placeholder="name"
+                placeholder="card-title"
                 type="text"
                 required
                 onChange={(e) => {
                   setCardinput(e.target.value);
                 }}
-                autoFocus='open'
+                autoFocus="open"
               />
               <button className="card-btn" type="submit">
                 Add card
