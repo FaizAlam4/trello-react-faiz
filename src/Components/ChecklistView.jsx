@@ -36,7 +36,6 @@ function ChecklistView({ data, updateChecklist }) {
   };
 
   const deleteChecklist = (data) => {
-   
     apiService
       .delete(`checklists/${data.id}?`)
       .then((res) => {
@@ -80,7 +79,7 @@ function ChecklistView({ data, updateChecklist }) {
         setCheckitem([...checkItem, res]);
         setOpen(false);
         setInv("");
-        setErr(false)
+        setErr(false);
       })
       .catch((err) => {
         console.log(err);
@@ -90,7 +89,6 @@ function ChecklistView({ data, updateChecklist }) {
   };
 
   const deleteCheckitem = (id) => {
-  
     apiService
       .delete(`checklists/${data.id}/checkItems/${id}?`)
       .then(() => {
@@ -119,8 +117,10 @@ function ChecklistView({ data, updateChecklist }) {
           display: "flex",
           flexFlow: "row wrap",
           justifyContent: "space-between",
+          alignContent:'center',
           gap: "40px",
           alignItems: "center",
+          width:'100%'
         }}
       >
         <div>
@@ -134,7 +134,7 @@ function ChecklistView({ data, updateChecklist }) {
             style={{
               padding: "5px",
               borderRadius: "5px",
-              cursor: "pointer",
+              cursor: "pointer"
             }}
             onClick={() => {
               deleteChecklist(data);
