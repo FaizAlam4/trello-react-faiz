@@ -71,6 +71,7 @@ function ChecklistView({ data, updateChecklist }) {
       setLoad(false);
     });
   }, []);
+  useEffect(() => {}, [checkedItems]);
 
   const createCheckitems = (data) => {
     apiService
@@ -117,10 +118,10 @@ function ChecklistView({ data, updateChecklist }) {
           display: "flex",
           flexFlow: "row wrap",
           justifyContent: "space-between",
-          alignContent:'center',
+          alignContent: "center",
           gap: "40px",
           alignItems: "center",
-          width:'100%'
+          width: "100%",
         }}
       >
         <div>
@@ -134,7 +135,7 @@ function ChecklistView({ data, updateChecklist }) {
             style={{
               padding: "5px",
               borderRadius: "5px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
             onClick={() => {
               deleteChecklist(data);
@@ -171,18 +172,33 @@ function ChecklistView({ data, updateChecklist }) {
                 flexFlow: "row wrap",
                 justifyContent: "space-around",
                 alignItems: "center",
+                textAlign: "left",
               }}
             >
-              <div>
-                <input
-                  className="checkitm"
-                  type="checkbox"
-                  checked={checkedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
-                />
-                <label htmlFor="op" style={{ padding: "10px" }}>
-                  {item.name}
-                </label>
+              <div className="first-div">
+                <div style={{display:'flex',flexFlow:'row nowrap',alignItems:'center', width:'200px'}}>
+                  <div style={{paddingBottom:'5px',paddingLeft:'20px'}}>
+                    <input
+                      className="checkitm"
+                      type="checkbox"
+                      checked={checkedItems.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                    />
+                  </div>
+                  <div
+                    className="op"
+                    style={{
+                      padding: "10px",
+                      overflow: "scroll",
+                 
+                      paddingTop:'29px'
+                    }}
+                  >
+
+{item.name}
+                  </div>
+
+                </div>
               </div>
               <div>
                 <button

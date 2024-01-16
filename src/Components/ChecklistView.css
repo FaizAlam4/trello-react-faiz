@@ -20,3 +20,9 @@ position: relative;
 top:10px;
     border: 1px solid black;
 }
+
+
+.op::-webkit-scrollbar
+{
+display: none;
+}
