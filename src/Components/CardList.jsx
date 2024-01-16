@@ -30,6 +30,7 @@ function CardList({
             element: cardData,
             element2: element["name"],
             element3: boardId,
+            element4:data
           }}
         >
           <div className="card-list">

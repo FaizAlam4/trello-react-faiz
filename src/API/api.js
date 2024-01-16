@@ -48,7 +48,7 @@ const apiService = {
       );
       return response.data;
     } catch (error) {
-      console.error(`Error deleting data for ${endpoint}:`, error);
+      console.error(`Error updating data for ${endpoint}:`, error);
       throw error;
     }
   },

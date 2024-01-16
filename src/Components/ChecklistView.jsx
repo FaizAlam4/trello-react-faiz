@@ -12,19 +12,40 @@ import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
 import BasicAlerts from "./ErrorComponent";
 
-function ChecklistView({ data, updateChecklist }) {
+function ChecklistView({ data, updateChecklist, onCard }) {
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
-  const [checkedItems, setCheckedItems] = useState([]);
   const [load, setLoad] = useState(true);
   const [err, setErr] = useState(false);
 
-  const handleCheckboxChange = (id) => {
-    let updatedData = checkedItems.includes(id)
-      ? checkedItems.filter((id2) => id2 != id)
-      : [...checkedItems, id];
-    setCheckedItems(updatedData);
+  useEffect(() => {
+    apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
+      setCheckitem(res);
+      setLoad(false);
+    });
+  }, []);
+
+  const handleCheckboxChange = (itemId, itemState) => {
+    apiService
+      .put(
+        `cards/${onCard.id}/checkItem/${itemId}?state=${
+          itemState == "complete" ? "incomplete" : "complete"
+        }&`
+      )
+      .then((data) => {
+        console.log("Successful:", data);
+        setCheckitem((prev) => {
+          const currData = prev.map((ele) => {
+            if (ele.id == itemId) return data;
+            else return ele;
+          });
+          return currData;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleClick = () => {
@@ -48,31 +69,6 @@ function ChecklistView({ data, updateChecklist }) {
       });
   };
 
-  const styles = {
-    position: "absolute",
-    top: -100,
-    right: 0,
-    left: 0,
-    zIndex: 1,
-    width: "180px",
-    border: "none",
-    p: 1,
-    bgcolor: "background.paper",
-    fontWeight: "400",
-    fontSize: "1rem",
-    borderRadius: "5px",
-    boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
-  };
-
-  useEffect(() => {
-    apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
-      setCheckitem(res);
-      setLoad(false);
-    });
-  }, []);
-  useEffect(() => {}, [checkedItems]);
-
   const createCheckitems = (data) => {
     apiService
       .post(`checklists/${data.id}/checkItems?name=${inv}&`)
@@ -95,10 +91,6 @@ function ChecklistView({ data, updateChecklist }) {
       .then(() => {
         let ans = checkItem.filter((ele) => ele.id != id);
         setCheckitem(ans);
-        if (checkedItems.includes(id)) {
-          let newVal = checkedItems.filter((ele) => ele != id);
-          setCheckedItems(newVal);
-        }
       })
       .catch((err) => {
         console.log(err);
@@ -106,6 +98,26 @@ function ChecklistView({ data, updateChecklist }) {
       });
   };
 
+  const styles = {
+    position: "absolute",
+    top: -100,
+    right: 0,
+    left: 0,
+    zIndex: 1,
+    width: "180px",
+    border: "none",
+    p: 1,
+    bgcolor: "background.paper",
+    fontWeight: "400",
+    fontSize: "1rem",
+    borderRadius: "5px",
+    boxShadow:
+      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
+  };
+
+  let checkedItems = checkItem.filter((ele) => {
+    return ele.state == "complete";
+  });
   let barValue =
     checkItem.length == 0 ? 0 : (checkedItems.length / checkItem.length) * 100;
 
@@ -188,8 +200,8 @@ function ChecklistView({ data, updateChecklist }) {
                     <input
                       className="checkitm"
                       type="checkbox"
-                      checked={checkedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
+                      checked={item.state == "complete" ? true : false}
+                      onChange={() => handleCheckboxChange(item.id, item.state)}
                     />
                   </div>
                   <div

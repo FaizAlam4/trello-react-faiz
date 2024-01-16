@@ -24,6 +24,8 @@ function CardView() {
   var { state } = useLocation();
   // console.log(state.element); //card data array
   // console.log(state.element2); //list name
+  // console.log(state.element4); //card object
+
 
   const [open, setOpen] = useState(false);
   const [checklistData, setChecklistdata] = useState([]);
@@ -43,6 +45,7 @@ function CardView() {
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);
   };
+
   const goBack = (path) => {
     navigate(path);
   };
@@ -207,9 +210,11 @@ function CardView() {
           checklistData.map((ele) => {
             return (
               <ChecklistView
+                
                 data={ele}
                 key={ele.id}
                 updateChecklist={updateChecklist}
+                onCard={state.element4}
               />
             );
           })
