@@ -4,7 +4,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CloseIcon from "@mui/icons-material/Close";
 import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import ChecklistView from "./ChecklistView";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
@@ -16,6 +16,8 @@ import Paper from "@mui/material/Paper";
 import BasicAlerts from "./ErrorComponent";
 import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
+import reducer from "../Reducer/reducer.js";
+import * as actionTypes from "../Reducer/actionType.js";
 
 function CardView() {
   const navigate = useNavigate();
@@ -25,52 +27,63 @@ function CardView() {
   // console.log(state.element); //card data array
   // console.log(state.element2); //list name
 
-  const [open, setOpen] = useState(false);
-  const [checklistData, setChecklistdata] = useState([]);
-  const [inputval, setInputval] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [placement, setPlacement] = useState();
-  const [load, setLoad] = useState(true);
-  const [err, setErr] = useState(false);
+  const initialState = {
+    open: false,
+    checklistData: [],
+    inputval: "",
+    anchorEl: null,
+    placement: undefined,
+    load: true,
+    err: false,
+  };
+
+  const [currentState, dispatch] = useReducer(reducer, initialState);
 
   const handleClick = (newPlacement) => (event) => {
-    setAnchorEl(event.currentTarget);
-    setOpen((prev) => placement !== newPlacement || !prev);
-    setPlacement(newPlacement);
+    dispatch({ type: actionTypes.SET_ANCHOR_EL, payload: event.currentTarget });
+    dispatch({
+      type: actionTypes.TOGGLE_OPEN,
+      payload: newPlacement !== currentState.placement || !currentState.open,
+    });
+    dispatch({ type: actionTypes.SET_PLACEMENT, payload: newPlacement });
   };
 
   const updateChecklist = (id) => {
-    var ans = checklistData.filter((ele) => ele.id != id);
-    setChecklistdata(ans);
+    var ans = currentState.checklistData.filter((ele) => ele.id != id);
+    dispatch({ type: actionTypes.SET_CHECKLIST_DATA, payload: ans });
   };
   const goBack = (path) => {
     navigate(path);
   };
 
   const createChecklist = () => {
- 
     apiService
-      .post(`cards/${id2}/checklists?name=${inputval}&`)
+      .post(`cards/${id2}/checklists?name=${currentState.inputval}&`)
       .then((data) => {
-        setChecklistdata([...checklistData, data]);
-        setOpen(false);
-        setInputval("");
-        setErr(false)
+        dispatch({
+          type: actionTypes.SET_CHECKLIST_DATA,
+          payload: [...currentState.checklistData, data],
+        });
+        dispatch({ type: actionTypes.TOGGLE_OPEN, payload: false });
+        dispatch({ type: actionTypes.SET_INPUT_VALUE, payload: "" });
+        dispatch({ type: actionTypes.SET_ERROR, payload: false });
       })
       .catch((err) => {
         console.log(err);
-        setOpen(false);
-        setInputval("");
-        setErr(true);
+        dispatch({ type: actionTypes.TOGGLE_OPEN, payload: false });
+        dispatch({ type: actionTypes.SET_INPUT_VALUE, payload: "" });
+        dispatch({ type: actionTypes.SET_ERROR, payload: true });
       });
   };
 
   useEffect(() => {
-    
-    apiService.get(`cards/${id2}/checklists?`).then((data)=>{
-      setChecklistdata(data);
-      setLoad(false)
-    }).catch((err)=>console.log(err))
+    apiService
+      .get(`cards/${id2}/checklists?`)
+      .then((data) => {
+        dispatch({ type: actionTypes.SET_CHECKLIST_DATA, payload: data });
+        dispatch({ type: actionTypes.SET_LOAD, payload: false });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -129,16 +142,16 @@ function CardView() {
             <Box sx={{ width: 500 }}>
               <Popper
                 sx={{ zIndex: 1200 }}
-                open={open}
-                anchorEl={anchorEl}
-                placement={placement}
+                open={currentState.open}
+                anchorEl={currentState.anchorEl}
+                placement={currentState.placement}
                 transition
               >
                 {({ TransitionProps }) => (
                   <Fade {...TransitionProps} timeout={350}>
                     <Paper>
                       <Typography
-                      variant="body"
+                        variant="body"
                         sx={{ p: 1, width: "200px", minHeight: "30px" }}
                       >
                         <form
@@ -150,9 +163,12 @@ function CardView() {
                         >
                           <input
                             type="text"
-                            value={inputval}
+                            value={currentState.inputval}
                             onChange={(e) => {
-                              setInputval(e.target.value);
+                              dispatch({
+                                type: actionTypes.SET_INPUT_VALUE,
+                                payload: e.target.value,
+                              });
                             }}
                             placeholder="title"
                             required
@@ -195,15 +211,15 @@ function CardView() {
             </Box>
           </div>
         </div>
-        {err ? <BasicAlerts /> : null}
-        {load ? (
+        {currentState.err ? <BasicAlerts /> : null}
+        {currentState.load ? (
           <div>
             <CircularProgress
               sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
             />
           </div>
         ) : (
-          checklistData.map((ele) => {
+          currentState.checklistData.map((ele) => {
             return (
               <ChecklistView
                 data={ele}

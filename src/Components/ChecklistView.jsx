@@ -7,32 +7,38 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import Box from "@mui/material/Box";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
 import BasicAlerts from "./ErrorComponent";
+import reducer from "../Reducer/reducer.js";
+import * as actionTypes from "../Reducer/actionType.js";
 
 function ChecklistView({ data, updateChecklist }) {
-  const [checkItem, setCheckitem] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [inv, setInv] = useState("");
-  const [checkedItems, setCheckedItems] = useState([]);
-  const [load, setLoad] = useState(true);
-  const [err, setErr] = useState(false);
+  const initialState = {
+    open: false,
+    checkItem: [],
+    inputval: "",
+    load: true,
+    err: false,
+    checkedItems: [],
+  };
+
+  const [currentState, dispatch] = useReducer(reducer, initialState);
 
   const handleCheckboxChange = (id) => {
-    let updatedData = checkedItems.includes(id)
-      ? checkedItems.filter((id2) => id2 != id)
-      : [...checkedItems, id];
-    setCheckedItems(updatedData);
+    let updatedData = currentState.checkedItems.includes(id)
+      ? currentState.checkedItems.filter((id2) => id2 != id)
+      : [...currentState.checkedItems, id];
+    dispatch({ type: actionTypes.SET_CHECKEDITEMS, payload: updatedData });
   };
 
   const handleClick = () => {
-    setOpen((prev) => !prev);
+    dispatch({ type: actionTypes.TOGGLE_OPEN, payload: !currentState.open });
   };
 
   const handleClickAway = () => {
-    setOpen(false);
+    dispatch({ type: actionTypes.TOGGLE_OPEN, payload: false });
   };
 
   const deleteChecklist = (data) => {
@@ -44,7 +50,7 @@ function ChecklistView({ data, updateChecklist }) {
       })
       .catch((err) => {
         console.log(err);
-        setErr(true);
+        dispatch({ type: actionTypes.SET_ERROR, payload: true });
       });
   };
 
@@ -67,24 +73,27 @@ function ChecklistView({ data, updateChecklist }) {
 
   useEffect(() => {
     apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
-      setCheckitem(res);
-      setLoad(false);
+      dispatch({ type: actionTypes.SET_CHECKITEM, payload: res });
+      dispatch({ type: actionTypes.SET_LOAD, payload: false });
     });
   }, []);
 
   const createCheckitems = (data) => {
     apiService
-      .post(`checklists/${data.id}/checkItems?name=${inv}&`)
+      .post(`checklists/${data.id}/checkItems?name=${currentState.inputval}&`)
       .then((res) => {
-        setCheckitem([...checkItem, res]);
-        setOpen(false);
-        setInv("");
-        setErr(false);
+        dispatch({
+          type: actionTypes.SET_CHECKITEM,
+          payload: [...currentState.checkItem, res],
+        });
+        dispatch({ type: actionTypes.TOGGLE_OPEN });
+        dispatch({ type: actionTypes.SET_INPUT_VALUE, payload: "" });
+        dispatch({ type: actionTypes.SET_ERROR, payload: false });
       })
       .catch((err) => {
         console.log(err);
-        setErr(true);
-        setOpen(false);
+        dispatch({ type: actionTypes.SET_ERROR, payload: true });
+        dispatch({ type: actionTypes.TOGGLE_OPEN });
       });
   };
 
@@ -92,11 +101,11 @@ function ChecklistView({ data, updateChecklist }) {
     apiService
       .delete(`checklists/${data.id}/checkItems/${id}?`)
       .then(() => {
-        let ans = checkItem.filter((ele) => ele.id != id);
-        setCheckitem(ans);
-        if (checkedItems.includes(id)) {
-          let newVal = checkedItems.filter((ele) => ele != id);
-          setCheckedItems(newVal);
+        let ans = currentState.checkItem.filter((ele) => ele.id != id);
+        dispatch({ type: actionTypes.SET_CHECKITEM, payload: ans });
+        if (currentState.checkedItems.includes(id)) {
+          let newVal = currentState.checkedItems.filter((ele) => ele != id);
+          dispatch({ type: actionTypes.SET_CHECKEDITEMS, payload: newVal });
         }
       })
       .catch((err) => {
@@ -106,7 +115,10 @@ function ChecklistView({ data, updateChecklist }) {
   };
 
   let barValue =
-    checkItem.length == 0 ? 0 : (checkedItems.length / checkItem.length) * 100;
+    currentState.checkItem.length == 0
+      ? 0
+      : (currentState.checkedItems.length / currentState.checkItem.length) *
+        100;
 
   barValue = parseInt(barValue.toFixed(0));
 
@@ -117,10 +129,10 @@ function ChecklistView({ data, updateChecklist }) {
           display: "flex",
           flexFlow: "row wrap",
           justifyContent: "space-between",
-          alignContent:'center',
+          alignContent: "center",
           gap: "40px",
           alignItems: "center",
-          width:'100%'
+          width: "100%",
         }}
       >
         <div>
@@ -134,7 +146,7 @@ function ChecklistView({ data, updateChecklist }) {
             style={{
               padding: "5px",
               borderRadius: "5px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
             onClick={() => {
               deleteChecklist(data);
@@ -155,14 +167,14 @@ function ChecklistView({ data, updateChecklist }) {
           {barValue}%
         </div>
       </div>
-      {load ? (
+      {currentState.load ? (
         <div>
           <CircularProgress
             sx={{ fontSize: "5rem", display: "block", margin: "auto" }}
           />
         </div>
       ) : (
-        checkItem.map((item, index) => {
+        currentState.checkItem.map((item, index) => {
           return (
             <div
               key={index}
@@ -177,7 +189,7 @@ function ChecklistView({ data, updateChecklist }) {
                 <input
                   className="checkitm"
                   type="checkbox"
-                  checked={checkedItems.includes(item.id)}
+                  checked={currentState.checkedItems.includes(item.id)}
                   onChange={() => handleCheckboxChange(item.id)}
                 />
                 <label htmlFor="op" style={{ padding: "10px" }}>
@@ -215,7 +227,7 @@ function ChecklistView({ data, updateChecklist }) {
             >
               Add an item
             </button>
-            {open ? (
+            {currentState.open ? (
               <Box sx={styles}>
                 <form
                   onSubmit={(e) => {
@@ -226,9 +238,12 @@ function ChecklistView({ data, updateChecklist }) {
                   <input
                     style={{ fontSize: "0.8rem" }}
                     type="text"
-                    value={inv}
+                    value={currentState.inputval}
                     onChange={(e) => {
-                      setInv(e.target.value);
+                      dispatch({
+                        type: actionTypes.SET_INPUT_VALUE,
+                        payload: e.target.value,
+                      });
                     }}
                     placeholder="item title.."
                     required
@@ -257,7 +272,7 @@ function ChecklistView({ data, updateChecklist }) {
             ) : null}
           </Box>
         </ClickAwayListener>
-        {err ? <BasicAlerts /> : null}
+        {currentState.err ? <BasicAlerts /> : null}
       </div>
     </div>
   );
