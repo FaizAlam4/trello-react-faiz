@@ -176,8 +176,15 @@ function ChecklistView({ data, updateChecklist }) {
               }}
             >
               <div className="first-div">
-                <div style={{display:'flex',flexFlow:'row nowrap',alignItems:'center', width:'200px'}}>
-                  <div style={{paddingBottom:'5px',paddingLeft:'20px'}}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexFlow: "row nowrap",
+                    alignItems: "center",
+                    width: "200px",
+                  }}
+                >
+                  <div style={{ paddingBottom: "5px", paddingLeft: "20px" }}>
                     <input
                       className="checkitm"
                       type="checkbox"
@@ -190,14 +197,12 @@ function ChecklistView({ data, updateChecklist }) {
                     style={{
                       padding: "10px",
                       overflow: "scroll",
-                 
-                      paddingTop:'29px'
+
+                      paddingTop: "29px",
                     }}
                   >
-
-{item.name}
+                    {item.name}
                   </div>
-
                 </div>
               </div>
               <div>
