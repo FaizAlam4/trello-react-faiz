@@ -38,7 +38,6 @@ function CardView() {
     setOpen((prev) => placement !== newPlacement || !prev);
     setPlacement(newPlacement);
   };
-
   const updateChecklist = (id) => {
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);
