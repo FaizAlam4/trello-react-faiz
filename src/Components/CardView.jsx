@@ -38,6 +38,7 @@ function CardView() {
     setOpen((prev) => placement !== newPlacement || !prev);
     setPlacement(newPlacement);
   };
+
   const updateChecklist = (id) => {
     var ans = checklistData.filter((ele) => ele.id != id);
     setChecklistdata(ans);
@@ -47,14 +48,13 @@ function CardView() {
   };
 
   const createChecklist = () => {
- 
     apiService
       .post(`cards/${id2}/checklists?name=${inputval}&`)
       .then((data) => {
         setChecklistdata([...checklistData, data]);
         setOpen(false);
         setInputval("");
-        setErr(false)
+        setErr(false);
       })
       .catch((err) => {
         console.log(err);
@@ -65,11 +65,13 @@ function CardView() {
   };
 
   useEffect(() => {
-    
-    apiService.get(`cards/${id2}/checklists?`).then((data)=>{
-      setChecklistdata(data);
-      setLoad(false)
-    }).catch((err)=>console.log(err))
+    apiService
+      .get(`cards/${id2}/checklists?`)
+      .then((data) => {
+        setChecklistdata(data);
+        setLoad(false);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -137,7 +139,7 @@ function CardView() {
                   <Fade {...TransitionProps} timeout={350}>
                     <Paper>
                       <Typography
-                      variant="body"
+                        variant="body"
                         sx={{ p: 1, width: "200px", minHeight: "30px" }}
                       >
                         <form
