@@ -14,23 +14,52 @@ import BasicAlerts from "./ErrorComponent";
 import reducer from "../Reducer/reducer.js";
 import * as actionTypes from "../Reducer/actionType.js";
 
-function ChecklistView({ data, updateChecklist }) {
+function ChecklistView({ data, updateChecklist, onCard }) {
   const initialState = {
     open: false,
     checkItem: [],
     inputval: "",
     load: true,
     err: false,
-    checkedItems: [],
   };
 
   const [currentState, dispatch] = useReducer(reducer, initialState);
 
-  const handleCheckboxChange = (id) => {
-    let updatedData = currentState.checkedItems.includes(id)
-      ? currentState.checkedItems.filter((id2) => id2 != id)
-      : [...currentState.checkedItems, id];
-    dispatch({ type: actionTypes.SET_CHECKEDITEMS, payload: updatedData });
+  useEffect(() => {
+    apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
+      dispatch({ type: actionTypes.SET_CHECKITEM, payload: res });
+      dispatch({ type: actionTypes.SET_LOAD, payload: false });
+    });
+  }, []);
+
+  const handleCheckboxChange = (itemId, itemState) => {
+    apiService
+      .put(
+        `cards/${onCard.id}/checkItem/${itemId}?state=${
+          itemState == "complete" ? "incomplete" : "complete"
+        }&`
+      )
+      .then((data) => {
+        console.log("Successful:", data);
+        // setCheckitem((prev) => {
+        //   const currData = prev.map((ele) => {
+        //     if (ele.id == itemId) return data;
+        //     else return ele;
+        //   });
+        //   return currData;
+        // });
+
+        dispatch({
+          type: actionTypes.SET_CHECKITEM,
+          payload: currentState.checkItem.map((ele) => {
+            if (ele.id == itemId) return data;
+            else return ele;
+          }),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleClick = () => {
@@ -53,30 +82,6 @@ function ChecklistView({ data, updateChecklist }) {
         dispatch({ type: actionTypes.SET_ERROR, payload: true });
       });
   };
-
-  const styles = {
-    position: "absolute",
-    top: -100,
-    right: 0,
-    left: 0,
-    zIndex: 1,
-    width: "180px",
-    border: "none",
-    p: 1,
-    bgcolor: "background.paper",
-    fontWeight: "400",
-    fontSize: "1rem",
-    borderRadius: "5px",
-    boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
-  };
-
-  useEffect(() => {
-    apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
-      dispatch({ type: actionTypes.SET_CHECKITEM, payload: res });
-      dispatch({ type: actionTypes.SET_LOAD, payload: false });
-    });
-  }, []);
 
   const createCheckitems = (data) => {
     apiService
@@ -103,10 +108,6 @@ function ChecklistView({ data, updateChecklist }) {
       .then(() => {
         let ans = currentState.checkItem.filter((ele) => ele.id != id);
         dispatch({ type: actionTypes.SET_CHECKITEM, payload: ans });
-        if (currentState.checkedItems.includes(id)) {
-          let newVal = currentState.checkedItems.filter((ele) => ele != id);
-          dispatch({ type: actionTypes.SET_CHECKEDITEMS, payload: newVal });
-        }
       })
       .catch((err) => {
         console.log(err);
@@ -114,11 +115,30 @@ function ChecklistView({ data, updateChecklist }) {
       });
   };
 
+  const styles = {
+    position: "absolute",
+    top: -100,
+    right: 0,
+    left: 0,
+    zIndex: 1,
+    width: "180px",
+    border: "none",
+    p: 1,
+    bgcolor: "background.paper",
+    fontWeight: "400",
+    fontSize: "1rem",
+    borderRadius: "5px",
+    boxShadow:
+      "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
+  };
+
+  let checkedItems = currentState.checkItem.filter((ele) => {
+    return ele.state == "complete";
+  });
   let barValue =
     currentState.checkItem.length == 0
       ? 0
-      : (currentState.checkedItems.length / currentState.checkItem.length) *
-        100;
+      : (checkedItems.length / currentState.checkItem.length) * 100;
 
   barValue = parseInt(barValue.toFixed(0));
 
@@ -199,8 +219,8 @@ function ChecklistView({ data, updateChecklist }) {
                     <input
                       className="checkitm"
                       type="checkbox"
-                      checked={currentState.checkedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
+                      checked={item.state == "complete" ? true : false}
+                      onChange={() => handleCheckboxChange(item.id, item.state)}
                     />
                   </div>
                   <div

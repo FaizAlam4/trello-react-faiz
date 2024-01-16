@@ -19,8 +19,6 @@ const reducer = (state, action) => {
       return { ...state, err: action.payload };
     case actionTypes.SET_CHECKITEM:
       return { ...state, checkItem: action.payload };
-    case actionTypes.SET_CHECKEDITEMS:
-      return { ...state, checkedItems: action.payload };
     default:
       return state;
   }

@@ -225,6 +225,7 @@ function CardView() {
                 data={ele}
                 key={ele.id}
                 updateChecklist={updateChecklist}
+                onCard={state.element4}
               />
             );
           })

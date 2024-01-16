@@ -6,4 +6,3 @@ export const SET_PLACEMENT = 'SET_PLACEMENT';
 export const SET_LOAD = 'SET_LOAD';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_CHECKITEM = 'SET_CHECKITEM';
-export const SET_CHECKEDITEMS = 'SET_CHECEDKITEMS';
