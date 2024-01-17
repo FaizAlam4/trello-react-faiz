@@ -41,13 +41,6 @@ function ChecklistView({ data, updateChecklist, onCard }) {
       )
       .then((data) => {
         console.log("Successful:", data);
-        // setCheckitem((prev) => {
-        //   const currData = prev.map((ele) => {
-        //     if (ele.id == itemId) return data;
-        //     else return ele;
-        //   });
-        //   return currData;
-        // });
 
         dispatch({
           type: actionTypes.SET_CHECKITEM,
