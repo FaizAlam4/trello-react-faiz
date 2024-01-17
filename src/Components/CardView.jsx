@@ -26,7 +26,6 @@ function CardView() {
   // console.log(state.element2); //list name
   // console.log(state.element4); //card object
 
-
   const [open, setOpen] = useState(false);
   const [checklistData, setChecklistdata] = useState([]);
   const [inputval, setInputval] = useState("");
@@ -42,8 +41,7 @@ function CardView() {
   };
 
   const updateChecklist = (id) => {
-    var ans = checklistData.filter((ele) => ele.id != id);
-    setChecklistdata(ans);
+    setChecklistdata((prevData) => prevData.filter((ele) => ele.id != id));
   };
 
   const goBack = (path) => {
@@ -210,7 +208,6 @@ function CardView() {
           checklistData.map((ele) => {
             return (
               <ChecklistView
-                
                 data={ele}
                 key={ele.id}
                 updateChecklist={updateChecklist}
