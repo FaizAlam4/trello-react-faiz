@@ -89,8 +89,7 @@ function ChecklistView({ data, updateChecklist, onCard }) {
     apiService
       .delete(`checklists/${data.id}/checkItems/${id}?`)
       .then(() => {
-        let ans = checkItem.filter((ele) => ele.id != id);
-        setCheckitem(ans);
+        setCheckitem((prevData) => prevData.filter((ele) => ele.id != id));
       })
       .catch((err) => {
         console.log(err);
