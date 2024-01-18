@@ -47,7 +47,7 @@ function BoardSection() {
       .then((res) => {
         setData((value) => [...value, res]);
         setOpen(false);
-        setError(false)
+        setError(false);
       })
       .catch(() => {
         setError(true);
@@ -103,7 +103,7 @@ function BoardSection() {
             >
               Create new board
               <Typography
-                sx={{ display: "block" , fontWeight:'200',fontSize:'1rem'}}
+                sx={{ display: "block", fontWeight: "200", fontSize: "1rem" }}
                 variant="h6"
                 component="h6"
               >
@@ -162,7 +162,7 @@ function BoardSection() {
                     value={inp}
                     onChange={handleInput}
                     required
-                    autoFocus='open'
+                    autoFocus="open"
                   />
 
                   <button className="btn">Create</button>
@@ -172,12 +172,11 @@ function BoardSection() {
           </Modal>
         </div>
         {error ? <BasicAlerts /> : null}
-<div style={{display:'flex',flexFlow:'row wrap',gap:'30px'}}>
-
-        {data.map((board, index) => (
-          <BoardLayout key={index} id={board.id} data={board} />
-        ))}
-</div>
+        <div style={{ display: "flex", flexFlow: "row wrap", gap: "30px" }}>
+          {data.map((board, index) => (
+            <BoardLayout key={index} id={board.id} data={board} />
+          ))}
+        </div>
       </div>
     </>
   );
