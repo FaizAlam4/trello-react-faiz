@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./BoardSection.css";
 import { useEffect, useState } from "react";
 import BoardLayout from "./BoardLayout";
@@ -10,16 +11,24 @@ import CircularProgress from "@mui/material/CircularProgress";
 import BasicAlerts from "./ErrorComponent";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import apiService from "../API/api";
+import { useDispatch, useSelector } from "react-redux";
+import { showBoard, createBoard } from "../feature/boardSlice";
 
 function BoardSection() {
-  const [data, setData] = useState([]);
+
+
   const [load, setLoad] = useState(true);
   const [error, setError] = useState(false);
   const [opend, setOpen] = useState(false);
+  const [inp, setInp] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch=useDispatch();
+  const { data } = useSelector((state) => state.board);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -28,14 +37,16 @@ function BoardSection() {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
 
+
+
   useEffect(() => {
     apiService.get("members/me/boards?").then((res) => {
-      setData(res);
+
+      dispatch(showBoard(res))
       setLoad(false);
     });
   }, []);
 
-  const [inp, setInp] = useState("");
 
   let handleInput = (e) => {
     setInp(e.target.value);
@@ -45,7 +56,8 @@ function BoardSection() {
     apiService
       .post(`boards/?name=${e}&`)
       .then((res) => {
-        setData((value) => [...value, res]);
+        // setData((value) => [...value, res]);
+        dispatch(createBoard(res))
         setOpen(false);
         setError(false)
       })
