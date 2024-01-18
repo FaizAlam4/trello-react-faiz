@@ -20,10 +20,13 @@ export const listSlice = createSlice({
       };
     },
     updateList: (state, action)=>{
+     let updatedRes= state.res.filter((ele)=>{
+     return ele.id!=action.payload.id
+      })
 
         return {
             ...state,
-            res:[action.payload]
+            res:updatedRes
         }
     }
   },

@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import apiService from "../API/api";
 import NotFound from "./NotFound";
 import { useDispatch, useSelector } from "react-redux";
-import { displayList, createMyList,updateList } from "../feature/listSlice";
+import { displayList, createMyList} from "../feature/listSlice";
 
 function ListDisplay() {
   const dispatch = useDispatch();
@@ -62,12 +62,6 @@ function ListDisplay() {
       });
   };
 
-  let updateData = (data, setErr) => {
-    let updateRes = res.filter((ele) => ele.id != data.id);
-    // setRes(updateRes);
-    dispatch(updateList(updateRes))
-    setErr(false);
-  };
 
   if (listLoad) {
     return (
@@ -89,7 +83,6 @@ function ListDisplay() {
             <ListView
               key={element.id}
               element={element}
-              updateData={updateData}
               boardId={id}
               setErr={setErr}
             />

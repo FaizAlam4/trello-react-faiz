@@ -2,21 +2,24 @@
 import "./ArchiveListener.css";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import apiService from "../API/api";
+import { useDispatch} from "react-redux";
+import { updateList } from "../feature/listSlice";
 
-export default function ArchiveListener({ data, updateData, setErr }) {
+export default function ArchiveListener({ data}) {
   let archiveEndPoint = `lists/${data.id}/?closed=true&`;
 
+  const dispatch=useDispatch()
   let handleOptions = () => {
     apiService
       .put(archiveEndPoint)
       .then((myData) => {
-        updateData(data,setErr);
-        // setErr(false);
+
+
+        dispatch(updateList(data))
         console.log(myData);
       })
       .catch((err) => {
         console.log("this is ", err);
-        setErr(true);
       });
   };
 

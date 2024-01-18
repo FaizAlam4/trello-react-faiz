@@ -10,10 +10,12 @@ import ArchiveListener from "./ArchiveListener";
 import RotateRightIcon from '@mui/icons-material/RotateRight';
 import apiService from "../API/api";
 
-function ListView({ element, updateData, boardId, setErr }) {
+function ListView({ element, boardId}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [load, setLoad] = useState(true);
+  const [cardData, setCardData] = useState([]);
+  const [cardInput, setCardinput] = useState("");
 
   const idf = open ? "simple-popover" : undefined;
 
@@ -52,8 +54,7 @@ function ListView({ element, updateData, boardId, setErr }) {
       });
   }, []);
 
-  const [cardData, setCardData] = useState([]);
-  const [cardInput, setCardinput] = useState("");
+
 
   const updateCardData = (id) => {
     let updatedResult = cardData.filter((ele) => ele.id != id);
@@ -74,8 +75,6 @@ function ListView({ element, updateData, boardId, setErr }) {
         <div>
           <ArchiveListener
             data={element}
-            updateData={updateData}
-            setErr={setErr}
           />
         </div>
       </div>
@@ -93,7 +92,6 @@ function ListView({ element, updateData, boardId, setErr }) {
                 cardData={cardData}
                 updateCardData={updateCardData}
                 boardId={boardId}
-                setErr={setErr}
               />
             );
           })
