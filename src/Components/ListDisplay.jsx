@@ -10,19 +10,24 @@ import { CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import apiService from "../API/api";
 import NotFound from "./NotFound";
+import { useDispatch, useSelector } from "react-redux";
+import { displayList, createMyList,updateList } from "../feature/listSlice";
+
 function ListDisplay() {
+  const dispatch = useDispatch();
+  const { res } = useSelector((state) => state.list);
+
+  
   const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const ide = open ? "simple-popper" : undefined;
+  const [listLoad, setlistLoad] = useState(true);
+  const [inputval, setInputval] = useState("");
+  const [err, setErr] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
-
-  const open = Boolean(anchorEl);
-  const ide = open ? "simple-popper" : undefined;
-  const [res, setRes] = useState([]);
-  const [listLoad, setlistLoad] = useState(true);
-  const [inputval, setInputval] = useState("");
-  const [err, setErr] = useState(false);
 
   const { id } = useParams();
 
@@ -30,7 +35,7 @@ function ListDisplay() {
     apiService
       .get(`boards/${id}/lists?`)
       .then((data) => {
-        setRes(data);
+        dispatch(displayList(data));
         setlistLoad(false);
       })
       .catch((err) => {
@@ -44,7 +49,7 @@ function ListDisplay() {
     apiService
       .post(`lists?name=${val}&idBoard=${id}&`)
       .then((data) => {
-        setRes([...res, data]);
+        dispatch(createMyList(data));
         setAnchorEl(null);
         setInputval("");
         setErr(false);
@@ -59,7 +64,8 @@ function ListDisplay() {
 
   let updateData = (data, setErr) => {
     let updateRes = res.filter((ele) => ele.id != data.id);
-    setRes(updateRes);
+    // setRes(updateRes);
+    dispatch(updateList(updateRes))
     setErr(false);
   };
 

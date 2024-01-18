@@ -56,7 +56,6 @@ function BoardSection() {
     apiService
       .post(`boards/?name=${e}&`)
       .then((res) => {
-        // setData((value) => [...value, res]);
         dispatch(createBoard(res))
         setOpen(false);
         setError(false)
