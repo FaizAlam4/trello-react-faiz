@@ -9,15 +9,35 @@ import CardList from "./CardList";
 import ArchiveListener from "./ArchiveListener";
 import RotateRightIcon from '@mui/icons-material/RotateRight';
 import apiService from "../API/api";
+import {useDispatch, useSelector} from 'react-redux' 
+import { showCard, createMyCard } from "../feature/cardSlice.js";
 
 function ListView({ element, boardId}) {
+const dispatch=useDispatch()
+const { cardData } = useSelector((state) => ({
+  cardData: state.card.cardData[element.id] || [],
+}));
+
+
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const idf = open ? "simple-popover" : undefined;
   const [load, setLoad] = useState(true);
-  const [cardData, setCardData] = useState([]);
   const [cardInput, setCardinput] = useState("");
 
-  const idf = open ? "simple-popover" : undefined;
+
+  useEffect(() => {
+    apiService
+      .get(`lists/${element.id}/cards?`)
+      .then((data) => {
+        dispatch(showCard({ listId: element.id, cards: data }))
+        setLoad(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -31,7 +51,9 @@ function ListView({ element, boardId}) {
     apiService
       .post(`cards?idList=${element.id}&name=${val}&`)
       .then((data) => {
-        setCardData([...cardData, data]);
+      
+        dispatch(createMyCard({ listId: element.id, card: data }))
+      
         setAnchorEl(null);
         setCardinput("");
       })
@@ -42,24 +64,6 @@ function ListView({ element, boardId}) {
       });
   };
 
-  useEffect(() => {
-    apiService
-      .get(`lists/${element.id}/cards?`)
-      .then((data) => {
-        setCardData(data);
-        setLoad(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-
-
-  const updateCardData = (id) => {
-    let updatedResult = cardData.filter((ele) => ele.id != id);
-    setCardData(updatedResult);
-  };
 
   return (
     <div className="wrap-item">
@@ -90,7 +94,6 @@ function ListView({ element, boardId}) {
                 data={ele}
                 element={element}
                 cardData={cardData}
-                updateCardData={updateCardData}
                 boardId={boardId}
               />
             );

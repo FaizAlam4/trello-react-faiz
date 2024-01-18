@@ -9,9 +9,7 @@ function CardList({
   data,
   element,
   cardData,
-  updateCardData,
   boardId,
-  setErr,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -59,8 +57,7 @@ function CardList({
         {open && (
           <Speeddial
             data={data}
-            updateCardData={updateCardData}
-            setErr={setErr}
+            element={element}
           />
         )}
       </div>

@@ -7,6 +7,8 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import DeleteIcon from "@mui/icons-material/Delete";
 import apiService from "../API/api";
 import ListIcon from "@mui/icons-material/List";
+import {useDispatch} from 'react-redux'
+import { deleteCard } from "../feature/cardSlice";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -20,18 +22,6 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 
-const deleteChecklist = (data, setErr, updateCardData) => {
-  apiService
-    .delete(`cards/${data.id}?`)
-    .then(() => {
-      updateCardData();
-      setErr(false)
-    })
-    .catch((err) => {
-      console.log(err);
-      setErr(true);
-    });
-};
 
 const actions = [
   {
@@ -41,7 +31,24 @@ const actions = [
   //   { icon: <SaveIcon />, name: 'Save' },
 ];
 
-export default function Speeddial({ data, updateCardData, setErr }) {
+export default function Speeddial({ data }) {
+  
+  
+  const dispatch=useDispatch();
+  const deleteChecklist = (data,element) => {
+    apiService
+      .delete(`cards/${data.id}?`)
+      .then(() => {
+        dispatch(deleteCard({listId:element.id, card:data}))
+  
+  
+      })
+      .catch((err) => {
+        console.log(err);
+   
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -70,9 +77,7 @@ export default function Speeddial({ data, updateCardData, setErr }) {
                 <DeleteIcon
                   sx={{ fontSize: "2.7rem", color: "red" }}
                   onClick={() => {
-                    deleteChecklist(data, setErr, () => {
-                      updateCardData(data.id);
-                    });
+                    deleteChecklist(data);
                   }}
                 />
               }
