@@ -11,8 +11,12 @@ import { useEffect, useState } from "react";
 import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
 import BasicAlerts from "./ErrorComponent";
+import { useDispatch } from "react-redux";
+import { deleteMyChecklist } from "../feature/checklistSlice.js";
 
-function ChecklistView({ data, updateChecklist, onCard }) {
+function ChecklistView({ data, onCard }) {
+  const dispatch = useDispatch();
+
   const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
@@ -61,7 +65,7 @@ function ChecklistView({ data, updateChecklist, onCard }) {
       .delete(`checklists/${data.id}?`)
       .then((res) => {
         console.log(res);
-        updateChecklist(data.id);
+        dispatch(deleteMyChecklist(data));
       })
       .catch((err) => {
         console.log(err);

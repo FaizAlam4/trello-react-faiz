@@ -31,7 +31,7 @@ export const cardSlice = createSlice({
       );
       return {
         ...state,
-        cardData: { ...state.cardData, [listId]: updatedCardData },
+        cardData: { ...state.cardData, [listId]: [...updatedCardData] },
       };
     },
   },

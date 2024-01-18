@@ -16,6 +16,11 @@ import Paper from "@mui/material/Paper";
 import BasicAlerts from "./ErrorComponent";
 import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  displayChecklist,
+  createMyChecklist,
+} from "../feature/checklistSlice.js";
 
 function CardView() {
   const navigate = useNavigate();
@@ -27,21 +32,19 @@ function CardView() {
   // console.log(state.element4); //card object
 
   const [open, setOpen] = useState(false);
-  const [checklistData, setChecklistdata] = useState([]);
   const [inputval, setInputval] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [placement, setPlacement] = useState();
   const [load, setLoad] = useState(true);
   const [err, setErr] = useState(false);
 
+  const dispatch = useDispatch();
+  const { checklistData } = useSelector((state) => state.checklist);
+
   const handleClick = (newPlacement) => (event) => {
     setAnchorEl(event.currentTarget);
     setOpen((prev) => placement !== newPlacement || !prev);
     setPlacement(newPlacement);
-  };
-
-  const updateChecklist = (id) => {
-    setChecklistdata((prevData) => prevData.filter((ele) => ele.id != id));
   };
 
   const goBack = (path) => {
@@ -52,7 +55,7 @@ function CardView() {
     apiService
       .post(`cards/${id2}/checklists?name=${inputval}&`)
       .then((data) => {
-        setChecklistdata([...checklistData, data]);
+        dispatch(createMyChecklist(data));
         setOpen(false);
         setInputval("");
         setErr(false);
@@ -69,7 +72,8 @@ function CardView() {
     apiService
       .get(`cards/${id2}/checklists?`)
       .then((data) => {
-        setChecklistdata(data);
+        dispatch(displayChecklist(data));
+
         setLoad(false);
       })
       .catch((err) => console.log(err));
@@ -207,12 +211,7 @@ function CardView() {
         ) : (
           checklistData.map((ele) => {
             return (
-              <ChecklistView
-                data={ele}
-                key={ele.id}
-                updateChecklist={updateChecklist}
-                onCard={state.element4}
-              />
+              <ChecklistView data={ele} key={ele.id} onCard={state.element4} />
             );
           })
         )}
