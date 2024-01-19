@@ -34,10 +34,29 @@ export const checkitemSlice = createSlice({
         checkItem: { ...state.checkItem, [checkListId]: [...updatedData] },
       };
     },
+    updateCheckItem: (state, action) => {
+      const { checkListId, checkItemId, data } = action.payload;
+      let newValue = state.checkItem[checkListId].map((ele) => {
+        if (ele.id == checkItemId) return data;
+        else return ele;
+      });
+
+      return {
+        ...state,
+        checkItem: {
+          ...state.checkItem,
+          [checkListId]: [...newValue],
+        },
+      };
+    },
   },
 });
 
-export const { showCheckitem, createCheckitem, deleteMyCheckitem } =
-  checkitemSlice.actions;
+export const {
+  showCheckitem,
+  createCheckitem,
+  deleteMyCheckitem,
+  updateCheckItem,
+} = checkitemSlice.actions;
 
 export default checkitemSlice.reducer;

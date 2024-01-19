@@ -17,6 +17,7 @@ import {
   showCheckitem,
   createCheckitem,
   deleteMyCheckitem,
+  updateCheckItem,
 } from "../feature/checkitemSlice.js";
 
 function ChecklistView({ data, onCard }) {
@@ -37,7 +38,7 @@ function ChecklistView({ data, onCard }) {
     });
   }, []);
 
-  const handleCheckboxChange = (itemId, itemState) => {
+  const handleCheckboxChange = (checkListId, itemId, itemState) => {
     apiService
       .put(
         `cards/${onCard.id}/checkItem/${itemId}?state=${
@@ -46,6 +47,14 @@ function ChecklistView({ data, onCard }) {
       )
       .then((data) => {
         console.log("Successful:", data);
+
+        dispatch(
+          updateCheckItem({
+            checkListId: checkListId,
+            checkItemId: itemId,
+            data: data,
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -93,7 +102,6 @@ function ChecklistView({ data, onCard }) {
     apiService
       .delete(`checklists/${data.id}/checkItems/${id}?`)
       .then(() => {
-        // setCheckitem((prevData) => prevData.filter((ele) => ele.id != id));
         dispatch(deleteMyCheckitem({ checkListId: data.id, checkItemId: id }));
       })
       .catch((err) => {
@@ -205,7 +213,9 @@ function ChecklistView({ data, onCard }) {
                       className="checkitm"
                       type="checkbox"
                       checked={item.state == "complete" ? true : false}
-                      onChange={() => handleCheckboxChange(item.id, item.state)}
+                      onChange={() =>
+                        handleCheckboxChange(data.id, item.id, item.state)
+                      }
                     />
                   </div>
                   <div
