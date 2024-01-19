@@ -11,13 +11,20 @@ import { useEffect, useState } from "react";
 import apiService from "../API/api";
 import { CircularProgress } from "@mui/material";
 import BasicAlerts from "./ErrorComponent";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteMyChecklist } from "../feature/checklistSlice.js";
+import {
+  showCheckitem,
+  createCheckitem,
+  deleteMyCheckitem,
+} from "../feature/checkitemSlice.js";
 
 function ChecklistView({ data, onCard }) {
   const dispatch = useDispatch();
+  const { checkItem } = useSelector((state) => ({
+    checkItem: state.checkitem.checkItem[data.id] || [],
+  }));
 
-  const [checkItem, setCheckitem] = useState([]);
   const [open, setOpen] = useState(false);
   const [inv, setInv] = useState("");
   const [load, setLoad] = useState(true);
@@ -25,7 +32,7 @@ function ChecklistView({ data, onCard }) {
 
   useEffect(() => {
     apiService.get(`checklists/${data.id}/checkItems?`).then((res) => {
-      setCheckitem(res);
+      dispatch(showCheckitem({ checkListId: data.id, itemData: res }));
       setLoad(false);
     });
   }, []);
@@ -39,13 +46,6 @@ function ChecklistView({ data, onCard }) {
       )
       .then((data) => {
         console.log("Successful:", data);
-        setCheckitem((prev) => {
-          const currData = prev.map((ele) => {
-            if (ele.id == itemId) return data;
-            else return ele;
-          });
-          return currData;
-        });
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +77,7 @@ function ChecklistView({ data, onCard }) {
     apiService
       .post(`checklists/${data.id}/checkItems?name=${inv}&`)
       .then((res) => {
-        setCheckitem([...checkItem, res]);
+        dispatch(createCheckitem({ checkListId: data.id, itemData: res }));
         setOpen(false);
         setInv("");
         setErr(false);
@@ -93,7 +93,8 @@ function ChecklistView({ data, onCard }) {
     apiService
       .delete(`checklists/${data.id}/checkItems/${id}?`)
       .then(() => {
-        setCheckitem((prevData) => prevData.filter((ele) => ele.id != id));
+        // setCheckitem((prevData) => prevData.filter((ele) => ele.id != id));
+        dispatch(deleteMyCheckitem({ checkListId: data.id, checkItemId: id }));
       })
       .catch((err) => {
         console.log(err);

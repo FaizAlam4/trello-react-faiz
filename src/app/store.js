@@ -3,7 +3,7 @@ import boardReducer from "../feature/boardSlice";
 import listReducer from "../feature/listSlice";
 import cardReducer from "../feature/cardSlice";
 import checklistReducer from "../feature/checklistSlice";
-// import checklistItemReducer from "../feature/checklistItemSlice";
+import checkitemReducer from "../feature/checkitemSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +11,6 @@ export const store = configureStore({
     list: listReducer,
     card: cardReducer,
     checklist: checklistReducer,
-    // checklistItem: checklistItemReducer,
+    checkitem: checkitemReducer,
   },
 });

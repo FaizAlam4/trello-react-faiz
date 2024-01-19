@@ -35,7 +35,7 @@ export default function Speeddial({ data }) {
   
   
   const dispatch=useDispatch();
-  const deleteChecklist = (data,element) => {
+  const deletemyCard = (data,element) => {
     apiService
       .delete(`cards/${data.id}?`)
       .then(() => {
@@ -77,7 +77,7 @@ export default function Speeddial({ data }) {
                 <DeleteIcon
                   sx={{ fontSize: "2.7rem", color: "red" }}
                   onClick={() => {
-                    deleteChecklist(data);
+                    deletemyCard(data);
                   }}
                 />
               }
